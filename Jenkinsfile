@@ -24,6 +24,12 @@ spec:
         - infinity
       securityContext:
         privileged: true
+      workingDir: /app 
+      volumeMounts:
+      - name: varlibcontainers
+        mountPath: /var/lib/containers
+      - name: workdir
+        mountPath: /app
     - name: aks
       image: acrdvpsplatformdev.azurecr.io/devops-platform-image:v0.0.5
       command:
@@ -32,6 +38,11 @@ spec:
         - infinity
   imagePullSecrets:
     - name: master-acr-credentials
+  volumes:
+  - name: varlibcontainers
+    emptyDir: {}
+  - name: workdir
+    emptyDir: {}
 '''
         }
     }
@@ -109,7 +120,7 @@ spec:
             steps {
                 echo '-=- build container image -=-'
                 container('podman') {
-                    sh "podman build -t ${APP_CONTAINER_IMAGE_PREFIX}/${APP_NAME}:${APP_VERSION} --runtime=/tmp/. /tmp/."
+                    sh "podman build -t ${APP_CONTAINER_IMAGE_PREFIX}/${APP_NAME}:${APP_VERSION} ."
                 }
             }
         }
