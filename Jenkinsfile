@@ -109,7 +109,7 @@ spec:
             steps {
                 echo '-=- build container image -=-'
                 container('podman') {
-                    sh "podman build -t ${APP_CONTAINER_IMAGE_PREFIX}/${APP_NAME}:${APP_VERSION} /tmp/."
+                    sh "podman build -t ${APP_CONTAINER_IMAGE_PREFIX}/${APP_NAME}:${APP_VERSION} --runtime=/tmp/. /tmp/."
                 }
             }
         }
