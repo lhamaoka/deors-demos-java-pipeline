@@ -136,7 +136,7 @@ spec:
                 archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
             }
         }
-
+        /*
         stage('Build & push container image') {
             steps {
                 echo '-=- build & push container image -=-'
@@ -158,7 +158,7 @@ spec:
                 }
             }
         }
-
+        
         stage('Integration tests') {
             steps {
                 echo '-=- execute integration tests -=-'
@@ -225,8 +225,9 @@ spec:
                 }
             }
         }
+        */
     }
-
+        
     post {
         always {
             echo '-=- stop test container and remove deployment -=-'
