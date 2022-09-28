@@ -50,7 +50,7 @@ spec:
         TEST_CONTAINER_NAME = "ephtest-$APP_NAME-$BUILD_NUMBER"
 
         // credentials & external systems
-        AAD_SERVICE_PRINCIPAL = credentials('sp-terraform-credentials')
+        //AAD_SERVICE_PRINCIPAL = credentials('sp-terraform-credentials')
         AKS_TENANT = credentials('aks-tenant')
         AKS_RESOURCE_GROUP = credentials('aks-resource-group')
         AKS_NAME = credentials('aks-name')
@@ -72,10 +72,12 @@ spec:
                     sh "podman login $ACR_URL -u $AAD_SERVICE_PRINCIPAL_USR -p $AAD_SERVICE_PRINCIPAL_PSW"
                 }
                 container('aks') {
-                    sh "az login --service-principal --username $AAD_SERVICE_PRINCIPAL_USR --password $AAD_SERVICE_PRINCIPAL_PSW --tenant $AKS_TENANT"
-                    sh "az aks get-credentials --resource-group $AKS_RESOURCE_GROUP --name $AKS_NAME"
-                    sh "kubelogin convert-kubeconfig -l spn --client-id $AAD_SERVICE_PRINCIPAL_USR --client-secret $AAD_SERVICE_PRINCIPAL_PSW"
-                    sh 'kubectl version'
+                    azureClusterLogin(credentialID:"sp-terraform-credentials", tenantId:$AKS_TENANT)
+                    echo 'ACABOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO'
+                    //sh "az login --service-principal --username $AAD_SERVICE_PRINCIPAL_USR --password $AAD_SERVICE_PRINCIPAL_PSW --tenant $AKS_TENANT"
+                    //sh "az aks get-credentials --resource-group $AKS_RESOURCE_GROUP --name $AKS_NAME"
+                    //sh "kubelogin convert-kubeconfig -l spn --client-id $AAD_SERVICE_PRINCIPAL_USR --client-secret $AAD_SERVICE_PRINCIPAL_PSW"
+                    //sh 'kubectl version'
                 }
                 script {
                     qualityGates = readYaml file: 'quality-gates.yaml'
