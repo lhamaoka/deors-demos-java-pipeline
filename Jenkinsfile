@@ -38,9 +38,7 @@ spec:
         }
     }
 
-    environment {
-        environmentVars()
-    }
+    environmentVars()
 
     stages {
         stage('Prepare environment') {
