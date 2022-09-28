@@ -132,7 +132,7 @@ spec:
                 archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
             }
         }
-        /*
+
         stage('Build & push container image') {
             steps {
                 echo '-=- build & push container image -=-'
@@ -154,7 +154,7 @@ spec:
                 }
             }
         }
-        
+
         stage('Integration tests') {
             steps {
                 echo '-=- execute integration tests -=-'
@@ -221,19 +221,16 @@ spec:
                 }
             }
         }
-        */
     }
-        
+
     post {
         always {
             echo '-=- stop test container and remove deployment -=-'
-            /*
             container('aks') {
                 sh "kubectl delete pod $TEST_CONTAINER_NAME"
                 sh "kubectl delete service $TEST_CONTAINER_NAME"
                 sh "kubectl delete service $TEST_CONTAINER_NAME-jacoco"
             }
-            */
         }
     }
 }
