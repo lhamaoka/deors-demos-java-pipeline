@@ -64,7 +64,7 @@ spec:
     stages {
         stage('Prepare environment') {
             steps {
-                prepareEnviroment()
+                prepareEnviroment(container1:'podman', container2:'aks')
             }
         }
 
