@@ -72,7 +72,8 @@ spec:
                     sh "podman login $ACR_URL -u $AAD_SERVICE_PRINCIPAL_USR -p $AAD_SERVICE_PRINCIPAL_PSW"
                 }
                 container('aks') {
-                    azureClusterLogin(credentialID:"sp-terraform-credentials", tenantId:$AKS_TENANT)
+                    echo 'EMPEZOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO'
+                    azureClusterLogin(credentialId:"sp-terraform-credentials", tenantId:"$AKS_TENANT")
                     echo 'ACABOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO'
                     //sh "az login --service-principal --username $AAD_SERVICE_PRINCIPAL_USR --password $AAD_SERVICE_PRINCIPAL_PSW --tenant $AKS_TENANT"
                     //sh "az aks get-credentials --resource-group $AKS_RESOURCE_GROUP --name $AKS_NAME"
