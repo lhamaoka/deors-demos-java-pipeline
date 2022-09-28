@@ -1,3 +1,4 @@
+#!groovy
 @Library("jenkins-library") _
 pipeline {
     agent {
@@ -38,26 +39,7 @@ spec:
     }
 
     environment {
-        APP_NAME = 'deors-demos-java-pipeline'
-        APP_VERSION = '1.0'
-        APP_CONTEXT_ROOT = '/'
-        APP_LISTENING_PORT = '8080'
-        APP_JACOCO_PORT = '6300'
-        IMAGE_PREFIX = 'deors'
-        IMAGE_NAME = "$IMAGE_PREFIX/$APP_NAME"
-        IMAGE_SNAPSHOT = "$IMAGE_NAME:snapshot-$BUILD_NUMBER"
-        TEST_CONTAINER_NAME = "ephtest-$APP_NAME-$BUILD_NUMBER"
-
-        // credentials & external systems
-        AAD_SERVICE_PRINCIPAL = credentials('sp-terraform-credentials')
-        AKS_TENANT = credentials('aks-tenant')
-        AKS_RESOURCE_GROUP = credentials('aks-resource-group')
-        AKS_NAME = credentials('aks-name')
-        ACR_NAME = credentials('acr-name')
-        ACR_URL = "${ACR_NAME}.azurecr.io"
-        ACR_PULL_CREDENTIAL = 'master-acr-credentials'
-        SELENIUM_GRID_HOST = 'selenium-grid' //credentials('selenium-grid-host')
-        SELENIUM_GRID_PORT = '4444' //credentials('selenium-grid-port')
+        environmentVars()
     }
 
     stages {
