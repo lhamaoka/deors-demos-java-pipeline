@@ -1,4 +1,3 @@
-#!groovy
 @Library("jenkins-library") _
 pipeline {
     agent {
