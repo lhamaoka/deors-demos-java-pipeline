@@ -80,7 +80,7 @@ spec:
             steps {
                  echo '-=- run code inspection & check quality gate -=-'
                  withSonarQubeEnv('ci-sonarqube') {
-                     sh './mvnw sonar:sonar -Dsonar.login=sqp_e5a14cfcdf093bd10e1de996776127b0d6b7276f' 
+                     sh './mvnw clean compile sonar:sonar -Dsonar.login=sqp_e5a14cfcdf093bd10e1de996776127b0d6b7276f -Dsonar.projectKey=deors-demos-java-pipeline -Dsonar.host.url=http://localhost:9000' 
                  }
                  timeout(time: 10, unit: 'MINUTES') {
                      waitForQualityGate abortPipeline: true
