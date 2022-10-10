@@ -60,8 +60,10 @@ spec:
         SELENIUM_GRID_HOST = 'selenium-grid' //credentials('selenium-grid-host')
         SELENIUM_GRID_PORT = '4444' //credentials('selenium-grid-port')
     }
+    
 
     stages {
+        
         stage('Prepare environment') {
             steps {
                 prepareEnviroment(container1:'podman', container2:'aks')
@@ -73,6 +75,18 @@ spec:
                compile()
             }
         }
+        
+        stage('Code inspection & quality gate') {
+            steps {
+                 echo '-=- run code inspection & check quality gate -=-'
+                 withSonarQubeEnv('ci-sonarqube') {
+                     sh './mvnw sonar:sonar'
+                 }
+                 timeout(time: 10, unit: 'MINUTES') {
+                     waitForQualityGate abortPipeline: true
+                 }
+             }
+         }
 
         stage('Unit tests') {
             steps {
@@ -125,17 +139,7 @@ spec:
             }
         }
         
-        stage('Code inspection & quality gate') {
-            steps {
-                 echo '-=- run code inspection & check quality gate -=-'
-                 withSonarQubeEnv('ci-sonarqube') {
-                     sh './mvnw sonar:sonar'
-                 }
-                 timeout(time: 10, unit: 'MINUTES') {
-                     waitForQualityGate abortPipeline: true
-                 }
-             }
-         }
+        
 
         stage('Run container image') {
             steps {
