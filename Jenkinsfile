@@ -80,7 +80,7 @@ spec:
             steps {
                  echo '-=- run code inspection & check quality gate -=-'
                  withSonarQubeEnv('ci-sonarqube') {
-                     sh './mvnw clean compile sonar:sonar -Dsonar.projectKey=prueba' 
+                     sh './mvnw clean compile sonar:sonar -Dsonar.projectKey=prueba2' 
                  }
                  timeout(time: 10, unit: 'MINUTES') {
                      waitForQualityGate abortPipeline: true
