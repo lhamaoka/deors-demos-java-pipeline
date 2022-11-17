@@ -90,12 +90,6 @@ spec:
             }
         }
 
-        stage('Unit tests') {
-            steps {
-                unitTest()
-            }
-        }
-
         stage('Mutation tests') {
             steps {
                 echo '-=- execute mutation tests -=-'
