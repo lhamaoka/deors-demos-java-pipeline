@@ -89,18 +89,6 @@ spec:
                 sh './mvnw compile'
             }
         }
-        
-        stage('Code inspection & quality gate') {
-            steps {
-                 echo '-=- run code inspection & check quality gate -=-'
-                 withSonarQubeEnv('ci-sonarqube') {
-                     sh './mvnw clean compile sonar:sonar -Dsonar.projectKey=prueba2' 
-                 }
-                 timeout(time: 10, unit: 'MINUTES') {
-                     waitForQualityGate abortPipeline: true
-                 }
-             }
-         }
 
         stage('Unit tests') {
             steps {
