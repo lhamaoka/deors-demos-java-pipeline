@@ -55,6 +55,7 @@ spec:
         ACR_NAME = credentials('acr_name')
         ACR_URL = "${ACR_NAME}.azurecr.io"
         ACR_PULL_CREDENTIAL = 'master-ndop-credentials'
+        SONAR_CREDENTIALS = credentials('sonar_credentials')
         SELENIUM_GRID_HOST = 'selenium-grid' //credentials('selenium-grid-host')
         SELENIUM_GRID_PORT = '4444' //credentials('selenium-grid-port')
     }
@@ -94,10 +95,7 @@ spec:
             steps {
                  echo '-=- run code inspection & check quality gate -=-'
                  withSonarQubeEnv('ci-sonarqube') {
-                     sh './mvnw clean compile sonar:sonar -Dsonar.projectKey=prueba2 -Dsonar.login=admin -Dsonar.password=adminsonar' 
-                 }
-                 timeout(time: 10, unit: 'MINUTES') {
-                     waitForQualityGate abortPipeline: true
+                     sh "./mvnw clean compile sonar:sonar -Dsonar.projectKey=prueba2 -Dsonar.login=$SONAR_CREDENTIALS_USR -Dsonar.password=$SONAR_CREDENTIALS_PSW" 
                  }
              }
          }
