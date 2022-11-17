@@ -62,9 +62,24 @@ spec:
 
     stages {
         
-        stage('Prepare environment') {
+       stage('Prepare environment') {
             steps {
-                prepareEnviroment(container1:'podman', container2:'aks')
+                echo '-=- prepare environment -=-'
+                sh 'java -version'
+                sh './mvnw --version'
+                container('podman') {
+                    sh 'podman --version'
+                    sh "podman login $ACR_URL -u $AAD_SERVICE_PRINCIPAL_USR -p $AAD_SERVICE_PRINCIPAL_PSW"
+                }
+                container('aks') {
+                    sh "az login --service-principal --username $AAD_SERVICE_PRINCIPAL_USR --password $AAD_SERVICE_PRINCIPAL_PSW --tenant $AKS_TENANT"
+                    sh "az aks get-credentials --resource-group $AKS_RESOURCE_GROUP --name $AKS_NAME"
+                    sh "kubelogin convert-kubeconfig -l spn --client-id $AAD_SERVICE_PRINCIPAL_USR --client-secret $AAD_SERVICE_PRINCIPAL_PSW"
+                    sh 'kubectl version'
+                }
+                script {
+                    qualityGates = readYaml file: 'quality-gates.yaml'
+                }
             }
         }
 
