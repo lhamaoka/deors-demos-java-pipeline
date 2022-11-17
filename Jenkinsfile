@@ -1,5 +1,3 @@
-#!groovy
-@Library("jenkins-library") _
 pipeline {
     agent {
         kubernetes {
@@ -27,13 +25,13 @@ spec:
         runAsUser: 0
         privileged: true
     - name: aks
-      image: acrdvpsplatformdev.azurecr.io/devops-platform-image:v0.0.5
+      image: ndopsandboxacr.azurecr.io/devops-platform-image:0.0.7
       command:
         - sleep
       args:
         - infinity
   imagePullSecrets:
-    - name: master-acr-credentials
+    - name: master-ndop-credentials
 '''
         }
     }
@@ -50,13 +48,13 @@ spec:
         TEST_CONTAINER_NAME = "ephtest-$APP_NAME-$BUILD_NUMBER"
 
         // credentials & external systems
-        AAD_SERVICE_PRINCIPAL = credentials('sp-terraform-credentials')
-        AKS_TENANT = credentials('aks-tenant')
-        AKS_RESOURCE_GROUP = credentials('aks-resource-group')
-        AKS_NAME = credentials('aks-name')
-        ACR_NAME = credentials('acr-name')
+        AAD_SERVICE_PRINCIPAL = credentials('sp-project-admin-credentials')
+        AKS_TENANT = credentials('aks_tenant')
+        AKS_RESOURCE_GROUP = credentials('aks_resource_group')
+        AKS_NAME = credentials('aks_name')
+        ACR_NAME = credentials('acr_name')
         ACR_URL = "${ACR_NAME}.azurecr.io"
-        ACR_PULL_CREDENTIAL = 'master-acr-credentials'
+        ACR_PULL_CREDENTIAL = 'master-ndop-credentials'
         SELENIUM_GRID_HOST = 'selenium-grid' //credentials('selenium-grid-host')
         SELENIUM_GRID_PORT = '4444' //credentials('selenium-grid-port')
     }
