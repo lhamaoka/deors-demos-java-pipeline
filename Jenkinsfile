@@ -49,10 +49,10 @@ spec:
 
         // credentials & external systems
         AAD_SERVICE_PRINCIPAL = credentials('sp-project-admin-credentials')
-        AKS_TENANT = credentials('aks_tenant')
-        AKS_RESOURCE_GROUP = credentials('aks_resource_group')
-        AKS_NAME = credentials('aks_name')
-        ACR_NAME = credentials('acr_name')
+        AKS_TENANT = credentials('aks-tenant')
+        AKS_RESOURCE_GROUP = credentials('aks-resource-group')
+        AKS_NAME = credentials('aks-name')
+        ACR_NAME = credentials('acr-name')
         ACR_URL = "${ACR_NAME}.azurecr.io"
         ACR_PULL_CREDENTIAL = 'master-ndop-credentials'
         SONAR_CREDENTIALS = credentials('sonar_credentials')
