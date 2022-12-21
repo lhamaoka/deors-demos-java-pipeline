@@ -53,7 +53,7 @@ spec:
         AKS_RESOURCE_GROUP = credentials('aks-resource-group')
         AKS_NAME = credentials('aks-name')
         ACR_NAME = credentials('acr-name')
-        ACR_URL = "${ACR_NAME}.azurecr.io"
+        ACR_URL = "ndopacracr34103.azurecr.io"
         ACR_PULL_CREDENTIAL = 'ndop-ndop-lab-acr-credential-secret'
         SONAR_CREDENTIALS = credentials('sonar_credentials')
         SELENIUM_GRID_HOST = 'selenium-grid' //credentials('selenium-grid-host')
