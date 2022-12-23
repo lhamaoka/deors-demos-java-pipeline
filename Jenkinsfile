@@ -25,13 +25,13 @@ spec:
         runAsUser: 0
         privileged: true
     - name: aks
-      image: ndopfoundationacr.azurecr.io/devops-platform-image:v0.1.0
+      image: ndopbpfoundationacr14943.azurecr.io/devops-platform-image:v0.1.0
       command:
         - sleep
       args:
         - infinity
   imagePullSecrets:
-    - name: master-ndop-credentials
+    - name: ndop-bp-lab-ndop-acr-credential-secret
 '''
         }
     }
@@ -48,12 +48,13 @@ spec:
         TEST_CONTAINER_NAME = "ephtest-$APP_NAME-$BUILD_NUMBER"
 
         // credentials & external systems
-        AAD_SERVICE_PRINCIPAL = credentials('sp-project-admin-credentials')
+        AAD_SERVICE_PRINCIPAL = credentials('admins-rbac-sp')
         AKS_TENANT = credentials('aks-tenant')
         AKS_RESOURCE_GROUP = credentials('aks-resource-group')
         AKS_NAME = credentials('aks-name')
         ACR_NAME = credentials('acr-name')
-        ACR_URL = "ndopacracr34103.azurecr.io"
+        ACR_URL = credentials('acr-url')
+        // change this later
         ACR_PULL_CREDENTIAL = 'ndop-ndop-lab-acr-credential-secret'
         SONAR_CREDENTIALS = credentials('sonar_credentials')
         SELENIUM_GRID_HOST = 'selenium-grid' //credentials('selenium-grid-host')
