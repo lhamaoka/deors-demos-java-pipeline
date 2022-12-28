@@ -55,7 +55,7 @@ spec:
         ACR_NAME = credentials('acr-name')
         ACR_URL = credentials('acr-url')
         // change this later
-        ACR_PULL_CREDENTIAL = 'ndop-ndop-lab-acr-credential-secret'
+        ACR_PULL_CREDENTIAL = 'ndop-lab-lab-ndop-lab-acr-credential-secret'
         SONAR_CREDENTIALS = credentials('sonar_credentials')
         SELENIUM_GRID_HOST = 'selenium-grid' //credentials('selenium-grid-host')
         SELENIUM_GRID_PORT = '4444' //credentials('selenium-grid-port')
