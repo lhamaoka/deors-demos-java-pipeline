@@ -48,7 +48,7 @@ spec:
         TEST_CONTAINER_NAME = "ephtest-$APP_NAME-$BUILD_NUMBER"
 
         // credentials & external systems
-        AAD_SERVICE_PRINCIPAL = credentials('prueba-sp')
+        AAD_SERVICE_PRINCIPAL = credentials('sp-project-admin-credentials')
         AKS_TENANT = credentials('aks-tenant')
         AKS_RESOURCE_GROUP = credentials('aks-resource-group')
         AKS_NAME = credentials('aks-name')
