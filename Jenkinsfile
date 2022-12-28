@@ -53,7 +53,7 @@ spec:
         AKS_RESOURCE_GROUP = credentials('aks-resource-group')
         AKS_NAME = credentials('aks-name')
         ACR_NAME = credentials('acr-name')
-        ACR_URL = credentials('acr-url')
+        ACR_URL = "ndopbpfoundationacr14943.azurecr.io"
         // change this later
         ACR_PULL_CREDENTIAL = 'ndop-lab-lab-ndop-lab-acr-credential-secret'
         SONAR_CREDENTIALS = credentials('sonar_credentials')
