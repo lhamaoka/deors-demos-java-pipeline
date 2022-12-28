@@ -25,7 +25,7 @@ spec:
         runAsUser: 0
         privileged: true
     - name: aks
-      image: ndopbpfoundationacr14943.azurecr.io/devops-platform-image:v0.1.0
+      image: ndoplabacracr40261.azurecr.io/devops-platform-image:v0.1.0
       command:
         - sleep
       args:
@@ -53,7 +53,7 @@ spec:
         AKS_RESOURCE_GROUP = credentials('aks-resource-group')
         AKS_NAME = credentials('aks-name')
         ACR_NAME = credentials('acr-name')
-        ACR_URL = "ndopbpfoundationacr14943.azurecr.io"
+        ACR_URL = "ndoplabacracr40261.azurecr.io"
         // change this later
         ACR_PULL_CREDENTIAL = 'ndop-lab-lab-ndop-lab-acr-credential-secret'
         SONAR_CREDENTIALS = credentials('sonar_credentials')
