@@ -31,7 +31,7 @@ spec:
       args:
         - infinity
   imagePullSecrets:
-    - name: ndop-bp-lab-ndop-acr-credential-secret
+    - name: ndop-lab-lab-ndop-lab-acr-credential-secret
 '''
         }
     }
