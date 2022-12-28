@@ -25,7 +25,7 @@ spec:
         runAsUser: 0
         privileged: true
     - name: aks
-      image: ndopbpFoundationacr14943.azurecr.io/devops-platform-image:v0.1.0
+      image: ndopbpfoundationacr14943.azurecr.io/devops-platform-image:v0.1.0
       command:
         - sleep
       args:
