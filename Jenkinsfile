@@ -69,11 +69,11 @@ spec:
         
        stage('variables') {
            steps {
-               sh "echo env.GIT_BRANCH"
+               echo "${env.GIT_BRANCH}"
            }
        }
         
-       stage('Prepare environment') {
+       /*stage('Prepare environment') {
             steps {
                 echo '-=- prepare environment -=-'
                 sh 'java -version'
@@ -110,7 +110,7 @@ spec:
              }
          }
 
-        /*stage('Mutation tests') {
+        stage('Mutation tests') {
             steps {
                 echo '-=- execute mutation tests -=-'
                 sh './mvnw org.pitest:pitest-maven:mutationCoverage'
