@@ -46,7 +46,7 @@ spec:
         IMAGE_NAME = "$IMAGE_PREFIX/$APP_NAME"
         IMAGE_SNAPSHOT = "$IMAGE_NAME:snapshot-$BUILD_NUMBER"
         TEST_CONTAINER_NAME = "ephtest-$APP_NAME-$BUILD_NUMBER"
-        BRANCH_SONAR = "$BRANCH_NAME"
+        BRANCH_SONAR = "$BUILD_NUMBER"
 
         // credentials & external systems
         AAD_SERVICE_PRINCIPAL = credentials('sp-project-admin-credentials')
