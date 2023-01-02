@@ -47,8 +47,8 @@ spec:
         IMAGE_SNAPSHOT = "$IMAGE_NAME:snapshot-$BUILD_NUMBER"
         TEST_CONTAINER_NAME = "ephtest-$APP_NAME-$BUILD_NUMBER"
         //BRANCH_SONARR = $GIT_NAME
-        BRANCH_SONAR = "$GIT_BRANCH"
-        BRANCH_MINUS = BRANCH_SONAR.minus('origin/')
+        BRANCH_SONAR = ${GIT_BRANCH}
+        BRANCH_MINUS = "${BRANCH_SONAR#*/}"
 
         // credentials & external systems
         AAD_SERVICE_PRINCIPAL = credentials('sp-project-admin-credentials')
@@ -72,6 +72,7 @@ spec:
                echo "${env.BRANCH_NAME}"
                echo "${env.GIT_LOCAL_BRANCH}"
                echo "${env.GIT_BRANCH_SHORT}"
+               echo "${env.BRANCH_MINUS}"
            }
        }
         
