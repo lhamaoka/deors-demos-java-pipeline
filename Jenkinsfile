@@ -69,7 +69,9 @@ spec:
         
        stage('variables') {
            steps {
-               echo "${env.GIT_BRANCH}"
+               echo "${env.BRANCH_NAME}"
+               echo "${env.GIT_LOCAL_BRANCH}"
+               echo "${env.GIT_BRANCH, fullName=false}"
            }
        }
         
