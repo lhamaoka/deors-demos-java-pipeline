@@ -65,6 +65,13 @@ spec:
 
     stages {
         
+       stage('variables') {
+           steps {
+               sh 'printenv'
+           }
+       }
+        
+        
        stage('Prepare environment') {
             steps {
                 echo '-=- prepare environment -=-'
