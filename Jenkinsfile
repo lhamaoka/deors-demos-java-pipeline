@@ -46,9 +46,9 @@ spec:
         IMAGE_NAME = "$IMAGE_PREFIX/$APP_NAME"
         IMAGE_SNAPSHOT = "$IMAGE_NAME:snapshot-$BUILD_NUMBER"
         TEST_CONTAINER_NAME = "ephtest-$APP_NAME-$BUILD_NUMBER"
-        BRANCH_SONARR = $GIT_NAME()
-        //BRANCH_SONAR = "$GIT_BRANCH"
-        //BRANCH_MINUS = BRANCH_SONAR.minus('origin/')
+        //BRANCH_SONARR = $GIT_NAME
+        BRANCH_SONAR = "$GIT_BRANCH"
+        BRANCH_MINUS = BRANCH_SONAR.minus('origin/')
 
         // credentials & external systems
         AAD_SERVICE_PRINCIPAL = credentials('sp-project-admin-credentials')
@@ -105,7 +105,7 @@ spec:
             steps {
                  echo '-=- run code inspection & check quality gate -=-'
                  withSonarQubeEnv('ci-sonarqube') {
-                     sh "./mvnw clean compile sonar:sonar -Dsonar.projectKey=$BRANCH_SONARR -Dsonar.login=$SONAR_CREDENTIALS_USR -Dsonar.password=$SONAR_CREDENTIALS_PSW" 
+                     sh "./mvnw clean compile sonar:sonar -Dsonar.projectKey=$BRANCH_MINUS -Dsonar.login=$SONAR_CREDENTIALS_USR -Dsonar.password=$SONAR_CREDENTIALS_PSW" 
                  }
              }
          }
