@@ -69,7 +69,7 @@ spec:
         
        stage('variables') {
            steps {
-               sh 'echo env.GIT_BRANCH'
+               sh "echo env.GIT_BRANCH"
            }
        }
         
