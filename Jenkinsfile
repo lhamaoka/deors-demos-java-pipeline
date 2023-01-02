@@ -46,9 +46,8 @@ spec:
         IMAGE_NAME = "$IMAGE_PREFIX/$APP_NAME"
         IMAGE_SNAPSHOT = "$IMAGE_NAME:snapshot-$BUILD_NUMBER"
         TEST_CONTAINER_NAME = "ephtest-$APP_NAME-$BUILD_NUMBER"
-        //BRANCH_SONARR = $GIT_NAME
-        BRANCH_SONAR = ${GIT_BRANCH}
-        BRANCH_MINUS = "${BRANCH_SONAR#*/}"
+        BRANCH_SONAR = "$GIT_BRANCH"
+        BRANCH_MINUS = BRANCH_SONAR.minus('origin/')
 
         // credentials & external systems
         AAD_SERVICE_PRINCIPAL = credentials('sp-project-admin-credentials')
@@ -67,16 +66,7 @@ spec:
 
     stages {
         
-       stage('variables') {
-           steps {
-               echo "${env.BRANCH_NAME}"
-               echo "${env.GIT_LOCAL_BRANCH}"
-               echo "${env.GIT_BRANCH_SHORT}"
-               echo "${env.BRANCH_MINUS}"
-           }
-       }
-        
-       /*stage('Prepare environment') {
+       stage('Prepare environment') {
             steps {
                 echo '-=- prepare environment -=-'
                 sh 'java -version'
@@ -236,6 +226,6 @@ spec:
                 sh "kubectl delete service $TEST_CONTAINER_NAME"
                 sh "kubectl delete service $TEST_CONTAINER_NAME-jacoco"
             }
-        }*/
+        }
     }
 }
