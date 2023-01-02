@@ -96,7 +96,7 @@ spec:
             steps {
                  echo '-=- run code inspection & check quality gate -=-'
                  withSonarQubeEnv('ci-sonarqube') {
-                     sh "./mvnw clean compile sonar:sonar -Dsonar.branch=kubernetes -Dsonar.projectKey=prueba2 -Dsonar.login=$SONAR_CREDENTIALS_USR -Dsonar.password=$SONAR_CREDENTIALS_PSW" 
+                     sh "./mvnw clean compile sonar:sonar -Dsonar.branch.name=kubernetes -Dsonar.projectKey=prueba2 -Dsonar.login=$SONAR_CREDENTIALS_USR -Dsonar.password=$SONAR_CREDENTIALS_PSW" 
                  }
              }
          }
