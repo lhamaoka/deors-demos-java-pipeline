@@ -15,6 +15,7 @@ public class HelloService {
 
     public String getHelloGreeting() {
         return defaultGreeting;
+        //Commet to check analyzed branch
     }
 
     public String getHelloGreeting(String name) {
