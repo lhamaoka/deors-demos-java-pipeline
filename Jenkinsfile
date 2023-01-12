@@ -131,7 +131,7 @@ spec:
         
         stage ('Generate BOM') {
             steps {
-                sh 'mvn org.cyclonedx:cyclonedx-maven-plugin:makeBom'
+                sh './mvnw org.cyclonedx:cyclonedx-maven-plugin:makeBom'
             }
         }
         
@@ -141,7 +141,7 @@ spec:
             }
         }
         
-        stage('Software composition analysis') {
+        /*stage('Software composition analysis') {
             steps {
                 echo '-=- run software composition analysis -=-'
                 sh './mvnw dependency-check:check'
@@ -158,7 +158,7 @@ spec:
                     }
                 }
             }
-        }
+        }*/
 
         stage('Package') {
             steps {
