@@ -57,7 +57,7 @@ spec:
         ACR_NAME = credentials('acr-name')
         ACR_URL = credentials('acr-url')
         // change this later
-        ACR_PULL_CREDENTIAL = 'ndop-lab-lab-ndop-lab-acr-credential-secret'
+        ACR_PULL_CREDENTIAL = 'ndop-lab-acr-credential-secret'
         SONAR_CREDENTIALS = credentials('sonar_credentials')
         SELENIUM_GRID_HOST = 'selenium-grid' //credentials('selenium-grid-host')
         SELENIUM_GRID_PORT = '4444' //credentials('selenium-grid-port')
@@ -110,6 +110,37 @@ spec:
             }
         }
 
+        /*stage('Software composition analysis') {
+            steps {
+                echo '-=- run software composition analysis -=-'
+                sh './mvnw dependency-check:check'
+                dependencyCheckPublisher(
+                    failedTotalCritical: qualityGates.security.dependencies.critical.failed,
+                    unstableTotalCritical: qualityGates.security.dependencies.critical.unstable,
+                    failedTotalHigh: qualityGates.security.dependencies.high.failed,
+                    unstableTotalHigh: qualityGates.security.dependencies.high.unstable,
+                    failedTotalMedium: qualityGates.security.dependencies.medium.failed,
+                    unstableTotalMedium: qualityGates.security.dependencies.medium.unstable)
+                script {
+                    if (currentBuild.result == 'FAILURE') {
+                        error('Dependency vulnerabilities exceed the configured threshold')
+                    }
+                }
+            }
+        }*/
+        
+        stage ('Generate BOM') {
+            steps {
+                sh 'mvn org.cyclonedx:cyclonedx-maven-plugin:makeBom'
+            }
+        }
+        
+        stage ('Dependency Tracker') {
+            steps {
+                dependencyTrackPublisher artifact: 'target/bom.xml', projectId: 'dependency-track-token', synchronous: true
+            }
+        }
+        
         stage('Software composition analysis') {
             steps {
                 echo '-=- run software composition analysis -=-'
@@ -148,8 +179,6 @@ spec:
             }
         }
         
-        
-
         stage('Run container image') {
             steps {
                 echo '-=- run container image -=-'
