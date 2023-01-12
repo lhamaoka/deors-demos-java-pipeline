@@ -137,7 +137,7 @@ spec:
         
         stage ('Dependency Tracker') {
             steps {
-                dependencyTrackPublisher artifact: 'target/bom.xml', projectId: 'dependency-track-token', synchronous: true
+                dependencyTrackPublisher artifact: 'target/bom.xml', projectId: '7c8d1e60-a221-417c-9d7c-d560d965a181', synchronous: true
             }
         }
         
