@@ -134,14 +134,14 @@ spec:
                 sh './mvnw org.cyclonedx:cyclonedx-maven-plugin:makeBom'
             }
         }
-        
+        /*
         stage ('Dependency Tracker') {
             steps {
                 dependencyTrackPublisher artifact: 'target/bom.xml', projectId: '7c8d1e60-a221-417c-9d7c-d560d965a181', synchronous: true
             }
         }
         
-        /*stage('Software composition analysis') {
+        stage('Software composition analysis') {
             steps {
                 echo '-=- run software composition analysis -=-'
                 sh './mvnw dependency-check:check'
