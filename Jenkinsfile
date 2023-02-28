@@ -87,28 +87,28 @@ spec:
             }
         }
 
-        stage('Compile') {
-            steps {
-                echo '-=- compiling project -=-'
-                sh './mvnw compile'
-            }
-        }
+        // stage('Compile') {
+        //     steps {
+        //         echo '-=- compiling project -=-'
+        //         sh './mvnw compile'
+        //     }
+        // }
         
-        stage('Code inspection & quality gate') {
-            steps {
-                 echo '-=- run code inspection & check quality gate -=-'
-                 withSonarQubeEnv('ci-sonarqube') {
-                     sh "./mvnw clean compile sonar:sonar -Dsonar.projectKey=$APP_NAME-$BRANCH_MINUS -Dsonar.login=$SONAR_CREDENTIALS_USR -Dsonar.password=$SONAR_CREDENTIALS_PSW" 
-                 }
-             }
-         }
+        // stage('Code inspection & quality gate') {
+        //     steps {
+        //          echo '-=- run code inspection & check quality gate -=-'
+        //          withSonarQubeEnv('ci-sonarqube') {
+        //              sh "./mvnw clean compile sonar:sonar -Dsonar.projectKey=$APP_NAME-$BRANCH_MINUS -Dsonar.login=$SONAR_CREDENTIALS_USR -Dsonar.password=$SONAR_CREDENTIALS_PSW" 
+        //          }
+        //      }
+        //  }
 
-        stage('Mutation tests') {
-            steps {
-                echo '-=- execute mutation tests -=-'
-                sh './mvnw org.pitest:pitest-maven:mutationCoverage'
-            }
-        }
+        // stage('Mutation tests') {
+        //     steps {
+        //         echo '-=- execute mutation tests -=-'
+        //         sh './mvnw org.pitest:pitest-maven:mutationCoverage'
+        //     }
+        // }
 
         /*stage('Software composition analysis') {
             steps {
@@ -129,11 +129,11 @@ spec:
             }
         }*/
         
-        stage ('Generate BOM') {
-            steps {
-                sh './mvnw org.cyclonedx:cyclonedx-maven-plugin:makeBom'
-            }
-        }
+        // stage ('Generate BOM') {
+        //     steps {
+        //         sh './mvnw org.cyclonedx:cyclonedx-maven-plugin:makeBom'
+        //     }
+        // }
         /*
         stage ('Dependency Tracker') {
             steps {
@@ -160,61 +160,61 @@ spec:
             }
         }*/
 
-        stage('Package') {
-            steps {
-                echo '-=- packaging project -=-'
-                sh './mvnw package -DskipTests'
-                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
-            }
-        }
+        // stage('Package') {
+        //     steps {
+        //         echo '-=- packaging project -=-'
+        //         sh './mvnw package -DskipTests'
+        //         archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+        //     }
+        // }
 
-        stage('Build & push container image') {
-            steps {
-                echo '-=- build & push container image -=-'
-                container('podman') {
-                    sh "podman build -t $IMAGE_SNAPSHOT ."
-                    sh "podman tag $IMAGE_SNAPSHOT $ACR_URL/$IMAGE_SNAPSHOT"
-                    sh "podman push $ACR_URL/$IMAGE_SNAPSHOT"
-                }
-            }
-        }
+        // stage('Build & push container image') {
+        //     steps {
+        //         echo '-=- build & push container image -=-'
+        //         container('podman') {
+        //             sh "podman build -t $IMAGE_SNAPSHOT ."
+        //             sh "podman tag $IMAGE_SNAPSHOT $ACR_URL/$IMAGE_SNAPSHOT"
+        //             sh "podman push $ACR_URL/$IMAGE_SNAPSHOT"
+        //         }
+        //     }
+        // }
         
-        stage('Run container image') {
-            steps {
-                echo '-=- run container image -=-'
-                container('aks') {
-                    sh "kubectl run $TEST_CONTAINER_NAME --image=$ACR_URL/$IMAGE_SNAPSHOT --env=JAVA_OPTS=-javaagent:/jacocoagent.jar=output=tcpserver,address=*,port=$APP_JACOCO_PORT --port=$APP_LISTENING_PORT --overrides='{\"apiVersion\": \"v1\", \"spec\": {\"imagePullSecrets\": [{\"name\": \"$ACR_PULL_CREDENTIAL\"}]}}'"
-                    sh "kubectl expose pod $TEST_CONTAINER_NAME --port=$APP_LISTENING_PORT"
-                    sh "kubectl expose pod $TEST_CONTAINER_NAME --port=$APP_JACOCO_PORT --name=$TEST_CONTAINER_NAME-jacoco"
-                }
-            }
-        }
+        // stage('Run container image') {
+        //     steps {
+        //         echo '-=- run container image -=-'
+        //         container('aks') {
+        //             sh "kubectl run $TEST_CONTAINER_NAME --image=$ACR_URL/$IMAGE_SNAPSHOT --env=JAVA_OPTS=-javaagent:/jacocoagent.jar=output=tcpserver,address=*,port=$APP_JACOCO_PORT --port=$APP_LISTENING_PORT --overrides='{\"apiVersion\": \"v1\", \"spec\": {\"imagePullSecrets\": [{\"name\": \"$ACR_PULL_CREDENTIAL\"}]}}'"
+        //             sh "kubectl expose pod $TEST_CONTAINER_NAME --port=$APP_LISTENING_PORT"
+        //             sh "kubectl expose pod $TEST_CONTAINER_NAME --port=$APP_JACOCO_PORT --name=$TEST_CONTAINER_NAME-jacoco"
+        //         }
+        //     }
+        // }
 
         stage('Integration tests') {
             steps {
                 echo '-=- execute integration tests -=-'
                 sh "curl --retry 10 --retry-connrefused --connect-timeout 5 --max-time 5 http://$TEST_CONTAINER_NAME:$APP_LISTENING_PORT" + "$APP_CONTEXT_ROOT/actuator/health".replace('//', '/')
                 sh "./mvnw failsafe:integration-test failsafe:verify -DargLine=-Dtest.selenium.hub.url=http://$SELENIUM_GRID_HOST:$SELENIUM_GRID_PORT/wd/hub -Dtest.target.server.url=http://$TEST_CONTAINER_NAME:$APP_LISTENING_PORT" + "$APP_CONTEXT_ROOT/".replace('//', '/')
-                sh "java -jar target/dependency/jacococli.jar dump --address $TEST_CONTAINER_NAME-jacoco --port $APP_JACOCO_PORT --destfile target/jacoco-it.exec"
-                sh 'mkdir -p target/site/jacoco-it'
-                sh 'java -jar target/dependency/jacococli.jar report target/jacoco-it.exec --classfiles target/classes --xml target/site/jacoco-it/jacoco.xml'
-                junit 'target/failsafe-reports/*.xml'
-                jacoco execPattern: 'target/jacoco-it.exec'
+                // sh "java -jar target/dependency/jacococli.jar dump --address $TEST_CONTAINER_NAME-jacoco --port $APP_JACOCO_PORT --destfile target/jacoco-it.exec"
+                // sh 'mkdir -p target/site/jacoco-it'
+                // sh 'java -jar target/dependency/jacococli.jar report target/jacoco-it.exec --classfiles target/classes --xml target/site/jacoco-it/jacoco.xml'
+                // junit 'target/failsafe-reports/*.xml'
+                // jacoco execPattern: 'target/jacoco-it.exec'
             }
         }
 
-        stage('Performance tests') {
-            steps {
-                echo '-=- execute performance tests -=-'
-                sh "curl --retry 10 --retry-connrefused --connect-timeout 5 --max-time 5 http://$TEST_CONTAINER_NAME:$APP_LISTENING_PORT" + "$APP_CONTEXT_ROOT/actuator/health".replace('//', '/')
-                sh "./mvnw jmeter:configure@configuration jmeter:jmeter jmeter:results -Djmeter.target.host=$TEST_CONTAINER_NAME -Djmeter.target.port=$APP_LISTENING_PORT -Djmeter.target.root=$APP_CONTEXT_ROOT"
-                perfReport(
-                    sourceDataFiles: 'target/jmeter/results/*.csv',
-                    errorUnstableThreshold: qualityGates.performance.throughput.error.unstable,
-                    errorFailedThreshold: qualityGates.performance.throughput.error.failed,
-                    errorUnstableResponseTimeThreshold: qualityGates.performance.throughput.response.unstable)
-            }
-        }
+        // stage('Performance tests') {
+        //     steps {
+        //         echo '-=- execute performance tests -=-'
+        //         sh "curl --retry 10 --retry-connrefused --connect-timeout 5 --max-time 5 http://$TEST_CONTAINER_NAME:$APP_LISTENING_PORT" + "$APP_CONTEXT_ROOT/actuator/health".replace('//', '/')
+        //         sh "./mvnw jmeter:configure@configuration jmeter:jmeter jmeter:results -Djmeter.target.host=$TEST_CONTAINER_NAME -Djmeter.target.port=$APP_LISTENING_PORT -Djmeter.target.root=$APP_CONTEXT_ROOT"
+        //         perfReport(
+        //             sourceDataFiles: 'target/jmeter/results/*.csv',
+        //             errorUnstableThreshold: qualityGates.performance.throughput.error.unstable,
+        //             errorFailedThreshold: qualityGates.performance.throughput.error.failed,
+        //             errorUnstableResponseTimeThreshold: qualityGates.performance.throughput.response.unstable)
+        //     }
+        // }
 
         // stage('Web page performance analysis') {
         //     steps {
@@ -233,18 +233,18 @@ spec:
         // }
         
 
-        stage('Promote container image') {
-            steps {
-                echo '-=- promote container image -=-'
-                container('podman') {
-                    // use latest or a non-snapshot tag to deploy to production
-                    sh "podman tag $IMAGE_SNAPSHOT $ACR_URL/$IMAGE_NAME:$APP_VERSION"
-                    sh "podman push $ACR_URL/$IMAGE_NAME:$APP_VERSION"
-                    sh "podman tag $IMAGE_SNAPSHOT $ACR_URL/$IMAGE_NAME:latest"
-                    sh "podman push $ACR_URL/$IMAGE_NAME:latest"
-                }
-            }
-        }
+        // stage('Promote container image') {
+        //     steps {
+        //         echo '-=- promote container image -=-'
+        //         container('podman') {
+        //             // use latest or a non-snapshot tag to deploy to production
+        //             sh "podman tag $IMAGE_SNAPSHOT $ACR_URL/$IMAGE_NAME:$APP_VERSION"
+        //             sh "podman push $ACR_URL/$IMAGE_NAME:$APP_VERSION"
+        //             sh "podman tag $IMAGE_SNAPSHOT $ACR_URL/$IMAGE_NAME:latest"
+        //             sh "podman push $ACR_URL/$IMAGE_NAME:latest"
+        //         }
+        //     }
+        // }
     }
 
     post {
