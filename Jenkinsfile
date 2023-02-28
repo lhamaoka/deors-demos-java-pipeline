@@ -168,16 +168,16 @@ spec:
             }
         }
 
-        // stage('Build & push container image') {
-        //     steps {
-        //         echo '-=- build & push container image -=-'
-        //         container('podman') {
-        //             sh "podman build -t $IMAGE_SNAPSHOT ."
-        //             sh "podman tag $IMAGE_SNAPSHOT $ACR_URL/$IMAGE_SNAPSHOT"
-        //             sh "podman push $ACR_URL/$IMAGE_SNAPSHOT"
-        //         }
-        //     }
-        // }
+        stage('Build & push container image') {
+            steps {
+                echo '-=- build & push container image -=-'
+                container('podman') {
+                    sh "podman build -t $IMAGE_SNAPSHOT ."
+                    sh "podman tag $IMAGE_SNAPSHOT $ACR_URL/$IMAGE_SNAPSHOT"
+                    sh "podman push $ACR_URL/$IMAGE_SNAPSHOT"
+                }
+            }
+        }
         
         stage('Run container image') {
             steps {
