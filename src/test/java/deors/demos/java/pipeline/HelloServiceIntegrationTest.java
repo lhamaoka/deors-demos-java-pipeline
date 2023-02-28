@@ -64,7 +64,7 @@ public class HelloServiceIntegrationTest {
 
         logger.info("running the tests in Chrome: " + RUN_CHROME);
 
-        RUN_EDGE = getConfigurationProperty("RUN_EDGE", "test.run.edge", false);
+        RUN_EDGE = getConfigurationProperty("RUN_EDGE", "test.run.edge", true);
 
         logger.info("running the tests in Edge: " + RUN_EDGE);
 
