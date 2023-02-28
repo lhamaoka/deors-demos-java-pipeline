@@ -160,13 +160,13 @@ spec:
             }
         }*/
 
-        // stage('Package') {
-        //     steps {
-        //         echo '-=- packaging project -=-'
-        //         sh './mvnw package -DskipTests'
-        //         archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
-        //     }
-        // }
+        stage('Package') {
+            steps {
+                echo '-=- packaging project -=-'
+                sh './mvnw package -DskipTests'
+                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+            }
+        }
 
         // stage('Build & push container image') {
         //     steps {
@@ -179,27 +179,27 @@ spec:
         //     }
         // }
         
-        // stage('Run container image') {
-        //     steps {
-        //         echo '-=- run container image -=-'
-        //         container('aks') {
-        //             sh "kubectl run $TEST_CONTAINER_NAME --image=$ACR_URL/$IMAGE_SNAPSHOT --env=JAVA_OPTS=-javaagent:/jacocoagent.jar=output=tcpserver,address=*,port=$APP_JACOCO_PORT --port=$APP_LISTENING_PORT --overrides='{\"apiVersion\": \"v1\", \"spec\": {\"imagePullSecrets\": [{\"name\": \"$ACR_PULL_CREDENTIAL\"}]}}'"
-        //             sh "kubectl expose pod $TEST_CONTAINER_NAME --port=$APP_LISTENING_PORT"
-        //             sh "kubectl expose pod $TEST_CONTAINER_NAME --port=$APP_JACOCO_PORT --name=$TEST_CONTAINER_NAME-jacoco"
-        //         }
-        //     }
-        // }
+        stage('Run container image') {
+            steps {
+                echo '-=- run container image -=-'
+                container('aks') {
+                    sh "kubectl run $TEST_CONTAINER_NAME --image=$ACR_URL/$IMAGE_SNAPSHOT --env=JAVA_OPTS=-javaagent:/jacocoagent.jar=output=tcpserver,address=*,port=$APP_JACOCO_PORT --port=$APP_LISTENING_PORT --overrides='{\"apiVersion\": \"v1\", \"spec\": {\"imagePullSecrets\": [{\"name\": \"$ACR_PULL_CREDENTIAL\"}]}}'"
+                    sh "kubectl expose pod $TEST_CONTAINER_NAME --port=$APP_LISTENING_PORT"
+                    sh "kubectl expose pod $TEST_CONTAINER_NAME --port=$APP_JACOCO_PORT --name=$TEST_CONTAINER_NAME-jacoco"
+                }
+            }
+        }
 
         stage('Integration tests') {
             steps {
                 echo '-=- execute integration tests -=-'
-                // sh "curl --retry 10 --retry-connrefused --connect-timeout 5 --max-time 5 http://$TEST_CONTAINER_NAME:$APP_LISTENING_PORT" + "$APP_CONTEXT_ROOT/actuator/health".replace('//', '/')
+                sh "curl --retry 10 --retry-connrefused --connect-timeout 5 --max-time 5 http://$TEST_CONTAINER_NAME:$APP_LISTENING_PORT" + "$APP_CONTEXT_ROOT/actuator/health".replace('//', '/')
                 sh "./mvnw failsafe:integration-test failsafe:verify -DargLine=-Dtest.selenium.hub.url=http://$SELENIUM_GRID_HOST:$SELENIUM_GRID_PORT/wd/hub -Dtest.target.server.url=http://$TEST_CONTAINER_NAME:$APP_LISTENING_PORT" + "$APP_CONTEXT_ROOT/".replace('//', '/')
-                // sh "java -jar target/dependency/jacococli.jar dump --address $TEST_CONTAINER_NAME-jacoco --port $APP_JACOCO_PORT --destfile target/jacoco-it.exec"
-                // sh 'mkdir -p target/site/jacoco-it'
-                // sh 'java -jar target/dependency/jacococli.jar report target/jacoco-it.exec --classfiles target/classes --xml target/site/jacoco-it/jacoco.xml'
-                // junit 'target/failsafe-reports/*.xml'
-                // jacoco execPattern: 'target/jacoco-it.exec'
+                sh "java -jar target/dependency/jacococli.jar dump --address $TEST_CONTAINER_NAME-jacoco --port $APP_JACOCO_PORT --destfile target/jacoco-it.exec"
+                sh 'mkdir -p target/site/jacoco-it'
+                sh 'java -jar target/dependency/jacococli.jar report target/jacoco-it.exec --classfiles target/classes --xml target/site/jacoco-it/jacoco.xml'
+                junit 'target/failsafe-reports/*.xml'
+                jacoco execPattern: 'target/jacoco-it.exec'
             }
         }
 
