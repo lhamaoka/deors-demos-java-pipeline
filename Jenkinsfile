@@ -25,7 +25,8 @@ spec:
         runAsUser: 0
         privileged: true
     - name: aks
-      image: ndopbpfoundationacr14943.azurecr.io/devops-platform-image:v0.1.0
+      image: ndoplabacracr43360.azurecr.io/devops-platform-image:v0.1.1
+      imagePullPolicy: Always
       command:
         - sleep
       args:
