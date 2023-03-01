@@ -73,7 +73,7 @@ public class HelloServiceIntegrationTest {
         logger.info("running the tests in Safari: " + RUN_SAFARI);
 
         SELENIUM_HUB_URL = getConfigurationProperty(
-            "SELENIUM_HUB_URL", "test.selenium.hub.url", "http://localhost:4444/wd/hub");
+            "SELENIUM_HUB_URL", "test.selenium.hub.url", "http://localhost:4444");
 
         logger.info("using Selenium hub at: " + SELENIUM_HUB_URL);
 
