@@ -52,15 +52,15 @@ public class HelloServiceIntegrationTest {
 
         logger.info("running the tests in HtmlUnit: " + RUN_HTMLUNIT);
 
-        RUN_IE = getConfigurationProperty("RUN_IE", "test.run.ie", false);
+        RUN_IE = getConfigurationProperty("RUN_IE", "test.run.ie", true);
 
         logger.info("running the tests in Internet Explorer: " + RUN_IE);
 
-        RUN_FIREFOX = getConfigurationProperty("RUN_FIREFOX", "test.run.firefox", false);
+        RUN_FIREFOX = getConfigurationProperty("RUN_FIREFOX", "test.run.firefox", true);
 
         logger.info("running the tests in Firefox: " + RUN_FIREFOX);
 
-        RUN_CHROME = getConfigurationProperty("RUN_CHROME", "test.run.chrome", false);
+        RUN_CHROME = getConfigurationProperty("RUN_CHROME", "test.run.chrome", true);
 
         logger.info("running the tests in Chrome: " + RUN_CHROME);
 
@@ -73,12 +73,12 @@ public class HelloServiceIntegrationTest {
         logger.info("running the tests in Safari: " + RUN_SAFARI);
 
         SELENIUM_HUB_URL = getConfigurationProperty(
-            "SELENIUM_HUB_URL", "test.selenium.hub.url", "http://localhost:4444");
+                "SELENIUM_HUB_URL", "test.selenium.hub.url", "http://localhost:4444");
 
         logger.info("using Selenium hub at: " + SELENIUM_HUB_URL);
 
         TARGET_SERVER_URL = getConfigurationProperty(
-            "TARGET_SERVER_URL", "test.target.server.url", "http://localhost:8080/");
+                "TARGET_SERVER_URL", "test.target.server.url", "http://localhost:8080/");
 
         logger.info("using target server at: " + TARGET_SERVER_URL);
     }
@@ -113,7 +113,7 @@ public class HelloServiceIntegrationTest {
 
     @Test
     public void testHtmlUnit()
-        throws MalformedURLException, IOException {
+            throws MalformedURLException, IOException {
 
         Assumptions.assumeTrue(RUN_HTMLUNIT);
 
@@ -133,7 +133,7 @@ public class HelloServiceIntegrationTest {
 
     @Test
     public void testIE()
-        throws MalformedURLException, IOException {
+            throws MalformedURLException, IOException {
 
         Assumptions.assumeTrue(RUN_IE);
 
@@ -153,7 +153,7 @@ public class HelloServiceIntegrationTest {
 
     @Test
     public void testFirefox()
-        throws MalformedURLException, IOException {
+            throws MalformedURLException, IOException {
 
         Assumptions.assumeTrue(RUN_FIREFOX);
 
@@ -173,7 +173,7 @@ public class HelloServiceIntegrationTest {
 
     @Test
     public void testChrome()
-        throws MalformedURLException, IOException {
+            throws MalformedURLException, IOException {
 
         Assumptions.assumeTrue(RUN_CHROME);
 
@@ -193,7 +193,7 @@ public class HelloServiceIntegrationTest {
 
     @Test
     public void testEdge()
-        throws MalformedURLException, IOException {
+            throws MalformedURLException, IOException {
 
         Assumptions.assumeTrue(RUN_EDGE);
 
@@ -213,7 +213,7 @@ public class HelloServiceIntegrationTest {
 
     @Test
     public void testSafari()
-        throws MalformedURLException, IOException {
+            throws MalformedURLException, IOException {
 
         Assumptions.assumeTrue(RUN_SAFARI);
 
@@ -239,10 +239,10 @@ public class HelloServiceIntegrationTest {
     private void testHelloGreeting(WebDriver driver, String baseUrl) {
 
         WebElement body = (new WebDriverWait(driver, Duration.ofSeconds(10))).until(
-            d -> {
-                d.get(baseUrl + "hello");
-                return d.findElement(By.xpath("/html/body"));
-            });
+                d -> {
+                    d.get(baseUrl + "hello");
+                    return d.findElement(By.xpath("/html/body"));
+                });
 
         assertEquals("Hello!", body.getText(), "HelloGreeting service should respond with 'Hello!' greeting");
     }
@@ -250,10 +250,10 @@ public class HelloServiceIntegrationTest {
     private void testHelloWithNameGreeting(WebDriver driver, String baseUrl) {
 
         WebElement body = (new WebDriverWait(driver, Duration.ofSeconds(10))).until(
-            d -> {
-                d.get(baseUrl + "hello/James");
-                return d.findElement(By.xpath("/html/body"));
-            });
+                d -> {
+                    d.get(baseUrl + "hello/James");
+                    return d.findElement(By.xpath("/html/body"));
+                });
 
         assertEquals("Hello!, James", body.getText(), "HelloGreeting service should respond with 'Hello!' greeting");
     }
