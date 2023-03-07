@@ -52,7 +52,7 @@ public class HelloServiceIntegrationTest {
 
         logger.info("running the tests in HtmlUnit: " + RUN_HTMLUNIT);
 
-        RUN_IE = getConfigurationProperty("RUN_IE", "test.run.ie", true);
+        RUN_IE = getConfigurationProperty("RUN_IE", "test.run.ie", false);
 
         logger.info("running the tests in Internet Explorer: " + RUN_IE);
 
