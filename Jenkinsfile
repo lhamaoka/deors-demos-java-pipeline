@@ -86,6 +86,7 @@ spec:
             }
         }
 
+        /*
         stage('Compile') {
             steps {
                 echo '-=- compiling project -=-'
@@ -93,23 +94,23 @@ spec:
             }
         }
 
-        // stage('Code inspection & quality gate') {
-        //     steps {
-        //          echo '-=- run code inspection & check quality gate -=-'
-        //          withSonarQubeEnv('ci-sonarqube') {
-        //              sh "./mvnw clean compile sonar:sonar -Dsonar.projectKey=$APP_NAME-$BRANCH_MINUS -Dsonar.login=$SONAR_CREDENTIALS_USR -Dsonar.password=$SONAR_CREDENTIALS_PSW"
-        //          }
-        //      }
-        //  }
+        stage('Code inspection & quality gate') {
+            steps {
+                 echo '-=- run code inspection & check quality gate -=-'
+                 withSonarQubeEnv('ci-sonarqube') {
+                     sh "./mvnw clean compile sonar:sonar -Dsonar.projectKey=$APP_NAME-$BRANCH_MINUS -Dsonar.login=$SONAR_CREDENTIALS_USR -Dsonar.password=$SONAR_CREDENTIALS_PSW"
+                 }
+             }
+         }
 
-        // stage('Mutation tests') {
-        //     steps {
-        //         echo '-=- execute mutation tests -=-'
-        //         sh './mvnw org.pitest:pitest-maven:mutationCoverage'
-        //     }
-        // }
+        stage('Mutation tests') {
+            steps {
+                echo '-=- execute mutation tests -=-'
+                sh './mvnw org.pitest:pitest-maven:mutationCoverage'
+            }
+        }
 
-        /*stage('Software composition analysis') {
+        stage('Software composition analysis') {
             steps {
                 echo '-=- run software composition analysis -=-'
                 sh './mvnw dependency-check:check'
