@@ -1,7 +1,7 @@
 pipeline {
     agent {
         kubernetes {
-            defaultContainer 'jdk'
+            defaultContainer 'maven'
             yaml '''
 apiVersion: v1
 kind: Pod
@@ -9,8 +9,8 @@ spec:
   securityContext:
     runAsUser: 1001
   containers:
-    - name: jdk
-      image: docker.io/eclipse-temurin:18.0.2.1_1-jdk
+    - name: maven
+      image: docker.io/maven:amazoncorretto
       command:
         - sleep
       args:
