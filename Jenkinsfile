@@ -60,7 +60,7 @@ spec:
         // change this later
         ACR_PULL_CREDENTIAL = 'ndop-acr-credential-secret'
         SONAR_CREDENTIALS = credentials('sonar_credentials')
-        SELENIUM_GRID_HOST = 'selenium-hub' //credentials('selenium-grid-host')
+        SELENIUM_GRID_HOST = 'selenium-grid' //credentials('selenium-grid-host')
         SELENIUM_GRID_PORT = '4444' //credentials('selenium-grid-port')
     }
 
@@ -109,34 +109,15 @@ spec:
             }
         }
 
-        stage('Software composition analysis') {
+         /*stage ('Dependency Tracker') {
             steps {
-                echo '-=- run software composition analysis -=-'
-                sh './mvnw dependency-check:check'
-                dependencyCheckPublisher(
-                    failedTotalCritical: qualityGates.security.dependencies.critical.failed,
-                    unstableTotalCritical: qualityGates.security.dependencies.critical.unstable,
-                    failedTotalHigh: qualityGates.security.dependencies.high.failed,
-                    unstableTotalHigh: qualityGates.security.dependencies.high.unstable,
-                    failedTotalMedium: qualityGates.security.dependencies.medium.failed,
-                    unstableTotalMedium: qualityGates.security.dependencies.medium.unstable)
-                script {
-                    if (currentBuild.result == 'FAILURE') {
-                        error('Dependency vulnerabilities exceed the configured threshold')
-                    }
-                }
+                dependencyTrackPublisher artifact: 'target/bom.xml', projectId: 'af61250c-6f65-4d02-9c0a-50710277c141', synchronous: true
             }
-        }
+        }*/
 
         stage('Generate BOM') {
             steps {
                 sh './mvnw org.cyclonedx:cyclonedx-maven-plugin:makeBom'
-            }
-        }
-
-        stage('Dependency Tracker') {
-            steps {
-                dependencyTrackPublisher artifact: 'target/bom.xml', projectId: '7c8d1e60-a221-417c-9d7c-d560d965a181', synchronous: true
             }
         }
 
@@ -193,7 +174,7 @@ spec:
             steps {
                 echo '-=- execute integration tests -=-'
                 sh "curl --retry 10 --retry-connrefused --connect-timeout 5 --max-time 5 http://$TEST_CONTAINER_NAME:$APP_LISTENING_PORT" + "$APP_CONTEXT_ROOT/actuator/health".replace('//', '/')
-                sh "./mvnw failsafe:integration-test failsafe:verify -DargLine=-Dtest.selenium.hub.url=http://$SELENIUM_GRID_HOST:$SELENIUM_GRID_PORT -Dtest.target.server.url=http://$TEST_CONTAINER_NAME:$APP_LISTENING_PORT" + "$APP_CONTEXT_ROOT/".replace('//', '/')
+                sh "./mvnw failsafe:integration-test failsafe:verify -DargLine=-Dtest.selenium.hub.url=http://$SELENIUM_GRID_HOST:$SELENIUM_GRID_PORT/wd/hub -Dtest.target.server.url=http://$TEST_CONTAINER_NAME:$APP_LISTENING_PORT" + "$APP_CONTEXT_ROOT/".replace('//', '/')
                 sh "java -jar target/dependency/jacococli.jar dump --address $TEST_CONTAINER_NAME-jacoco --port $APP_JACOCO_PORT --destfile target/jacoco-it.exec"
                 sh 'mkdir -p target/site/jacoco-it'
                 sh 'java -jar target/dependency/jacococli.jar report target/jacoco-it.exec --classfiles target/classes --xml target/site/jacoco-it/jacoco.xml'
@@ -202,47 +183,47 @@ spec:
             }
         }
 
-        // stage('Performance tests') {
-        //     steps {
-        //         echo '-=- execute performance tests -=-'
-        //         sh "curl --retry 10 --retry-connrefused --connect-timeout 5 --max-time 5 http://$TEST_CONTAINER_NAME:$APP_LISTENING_PORT" + "$APP_CONTEXT_ROOT/actuator/health".replace('//', '/')
-        //         sh "./mvnw jmeter:configure@configuration jmeter:jmeter jmeter:results -Djmeter.target.host=$TEST_CONTAINER_NAME -Djmeter.target.port=$APP_LISTENING_PORT -Djmeter.target.root=$APP_CONTEXT_ROOT"
-        //         perfReport(
-        //             sourceDataFiles: 'target/jmeter/results/*.csv',
-        //             errorUnstableThreshold: qualityGates.performance.throughput.error.unstable,
-        //             errorFailedThreshold: qualityGates.performance.throughput.error.failed,
-        //             errorUnstableResponseTimeThreshold: qualityGates.performance.throughput.response.unstable)
-        //     }
-        // }
+        stage('Performance tests') {
+            steps {
+                echo '-=- execute performance tests -=-'
+                sh "curl --retry 10 --retry-connrefused --connect-timeout 5 --max-time 5 http://$TEST_CONTAINER_NAME:$APP_LISTENING_PORT" + "$APP_CONTEXT_ROOT/actuator/health".replace('//', '/')
+                sh "./mvnw jmeter:configure@configuration jmeter:jmeter jmeter:results -Djmeter.target.host=$TEST_CONTAINER_NAME -Djmeter.target.port=$APP_LISTENING_PORT -Djmeter.target.root=$APP_CONTEXT_ROOT"
+                perfReport(
+                    sourceDataFiles: 'target/jmeter/results/*.csv',
+                    errorUnstableThreshold: qualityGates.performance.throughput.error.unstable,
+                    errorFailedThreshold: qualityGates.performance.throughput.error.failed,
+                    errorUnstableResponseTimeThreshold: qualityGates.performance.throughput.response.unstable)
+            }
+        }
 
-        // stage('Web page performance analysis') {
-        //     steps {
-        //         echo '-=- execute web page performance analysis -=-'
-        //         sh 'apt-get update'
-        //         sh 'apt-get install -y gnupg'
-        //         sh 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | tee -a /etc/apt/sources.list.d/google.list'
-        //         sh 'curl -sL https://dl.google.com/linux/linux_signing_key.pub | apt-key add -'
-        //         sh 'curl -sL https://deb.nodesource.com/setup_10.x | bash -'
-        //         sh 'apt-get install -y nodejs google-chrome-stable'
-        //         sh 'npm install -g lighthouse@5.6.0'
-        //         sh "lighthouse http://$TEST_CONTAINER_NAME:$APP_LISTENING_PORT/$APP_CONTEXT_ROOT/hello --output=html --output=csv --chrome-flags=\"--headless --no-sandbox\""
-        //         archiveArtifacts artifacts: '*.report.html'
-        //         archiveArtifacts artifacts: '*.report.csv'
-        //     }
-        // }
+        stage('Web page performance analysis') {
+            steps {
+                echo '-=- execute web page performance analysis -=-'
+                sh 'apt-get update'
+                sh 'apt-get install -y gnupg'
+                sh 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | tee -a /etc/apt/sources.list.d/google.list'
+                sh 'curl -sL https://dl.google.com/linux/linux_signing_key.pub | apt-key add -'
+                sh 'curl -sL https://deb.nodesource.com/setup_10.x | bash -'
+                sh 'apt-get install -y nodejs google-chrome-stable'
+                sh 'npm install -g lighthouse@5.6.0'
+                sh "lighthouse http://$TEST_CONTAINER_NAME:$APP_LISTENING_PORT/$APP_CONTEXT_ROOT/hello --output=html --output=csv --chrome-flags=\"--headless --no-sandbox\""
+                archiveArtifacts artifacts: '*.report.html'
+                archiveArtifacts artifacts: '*.report.csv'
+            }
+        }
 
-    // stage('Promote container image') {
-    //     steps {
-    //         echo '-=- promote container image -=-'
-    //         container('podman') {
-    //             // use latest or a non-snapshot tag to deploy to production
-    //             sh "podman tag $IMAGE_SNAPSHOT $ACR_URL/$IMAGE_NAME:$APP_VERSION"
-    //             sh "podman push $ACR_URL/$IMAGE_NAME:$APP_VERSION"
-    //             sh "podman tag $IMAGE_SNAPSHOT $ACR_URL/$IMAGE_NAME:latest"
-    //             sh "podman push $ACR_URL/$IMAGE_NAME:latest"
-    //         }
-    //     }
-    // }
+        stage('Promote container image') {
+            steps {
+                echo '-=- promote container image -=-'
+                container('podman') {
+                    // use latest or a non-snapshot tag to deploy to production
+                    sh "podman tag $IMAGE_SNAPSHOT $ACR_URL/$IMAGE_NAME:$APP_VERSION"
+                    sh "podman push $ACR_URL/$IMAGE_NAME:$APP_VERSION"
+                    sh "podman tag $IMAGE_SNAPSHOT $ACR_URL/$IMAGE_NAME:latest"
+                    sh "podman push $ACR_URL/$IMAGE_NAME:latest"
+                }
+            }
+        }
     }
 
     post {
