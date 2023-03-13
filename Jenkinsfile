@@ -109,18 +109,18 @@ spec:
             }
         }
 
-         /*stage ('Dependency Tracker') {
+        stage('Dependency Tracker') {
             steps {
                 dependencyTrackPublisher artifact: 'target/bom.xml', projectId: 'af61250c-6f65-4d02-9c0a-50710277c141', synchronous: true
             }
-        }*/
+        }
 
         stage('Generate BOM') {
             steps {
                 sh './mvnw org.cyclonedx:cyclonedx-maven-plugin:makeBom'
             }
         }
-
+/*
         stage('Software composition analysis') {
             steps {
                 echo '-=- run software composition analysis -=-'
@@ -139,7 +139,7 @@ spec:
                 }
             }
         }
-
+*/
         stage('Package') {
             steps {
                 echo '-=- packaging project -=-'
