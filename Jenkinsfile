@@ -188,7 +188,7 @@ spec:
                     sh "kubectl expose pod $TEST_CONTAINER_NAME --port=$APP_JACOCO_PORT --name=$TEST_CONTAINER_NAME-jacoco"
                 }
             }
-        }*/
+        }
 
         stage('Integration tests') {
             steps {
