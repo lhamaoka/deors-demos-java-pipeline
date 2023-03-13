@@ -1,7 +1,7 @@
 pipeline {
     agent {
         kubernetes {
-            defaultContainer 'maven'
+            defaultContainer 'jdk'
             yaml '''
 apiVersion: v1
 kind: Pod
@@ -9,8 +9,8 @@ spec:
   securityContext:
     runAsUser: 1001
   containers:
-    - name: maven
-      image: docker.io/maven:amazoncorretto
+    - name: jdk
+      image: docker.io/eclipse-temurin:18.0.2.1_1-jdk
       command:
         - sleep
       args:
@@ -93,13 +93,12 @@ spec:
             }
         }
 
-        /*
         stage('Code inspection & quality gate') {
             steps {
-                 echo '-=- run code inspection & check quality gate -=-'
-                 withSonarQubeEnv('ci-sonarqube') {
-                     sh "./mvnw clean compile sonar:sonar -Dsonar.projectKey=$APP_NAME-$BRANCH_MINUS -Dsonar.login=$SONAR_CREDENTIALS_USR -Dsonar.password=$SONAR_CREDENTIALS_PSW"
-                 }
+                echo '-=- run code inspection & check quality gate -=-'
+                withSonarQubeEnv('ci-sonarqube') {
+                    sh "./mvnw clean compile sonar:sonar -Dsonar.projectKey=$APP_NAME-$BRANCH_MINUS -Dsonar.login=$SONAR_CREDENTIALS_USR -Dsonar.password=$SONAR_CREDENTIALS_PSW"
+                }
             }
         }
 
@@ -127,15 +126,15 @@ spec:
                     }
                 }
             }
-        }*/
+        }
 
-        // stage ('Generate BOM') {
-        //     steps {
-        //         sh './mvnw org.cyclonedx:cyclonedx-maven-plugin:makeBom'
-        //     }
-        // }
-        /*
-        stage ('Dependency Tracker') {
+        stage('Generate BOM') {
+            steps {
+                sh './mvnw org.cyclonedx:cyclonedx-maven-plugin:makeBom'
+            }
+        }
+
+        stage('Dependency Tracker') {
             steps {
                 dependencyTrackPublisher artifact: 'target/bom.xml', projectId: '7c8d1e60-a221-417c-9d7c-d560d965a181', synchronous: true
             }
@@ -158,7 +157,7 @@ spec:
                     }
                 }
             }
-        }*/
+        }
 
         stage('Package') {
             steps {
