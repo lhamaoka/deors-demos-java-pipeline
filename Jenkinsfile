@@ -177,7 +177,7 @@ spec:
                     sh "podman push $ACR_URL/$IMAGE_SNAPSHOT"
                 }
             }
-        }
+        }*/
 
         stage('Run container image') {
             steps {
