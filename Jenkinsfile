@@ -51,7 +51,7 @@ spec:
         BRANCH_MINUS = BRANCH_SONAR.minus('origin/')
 
         // credentials & external systems
-        AAD_SERVICE_PRINCIPAL = credentials('admins/rbac/sp')
+        AAD_SERVICE_PRINCIPAL = credentials('admins-rbac-sp')
         AKS_TENANT = credentials('aks-tenant')
         AKS_RESOURCE_GROUP = credentials('aks-resource-group')
         AKS_NAME = credentials('aks-name')
