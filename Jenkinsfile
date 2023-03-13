@@ -25,14 +25,14 @@ spec:
         runAsUser: 0
         privileged: true
     - name: aks
-      image: ndoplabacracr48643.azurecr.io/devops-platform-image:v0.1.1
+      image: ndoptestacracr48487.azurecr.io/ndop_aks_builder:latest
       imagePullPolicy: Always
       command:
         - sleep
       args:
         - infinity
   imagePullSecrets:
-    - name: ndop-lab-acr-credential-secret
+    - name: ndop-acr-credential-secret
 '''
         }
     }
@@ -51,23 +51,21 @@ spec:
         BRANCH_MINUS = BRANCH_SONAR.minus('origin/')
 
         // credentials & external systems
-        AAD_SERVICE_PRINCIPAL = credentials('sp-project-admin-credentials')
+        AAD_SERVICE_PRINCIPAL = credentials('admins/rbac/sp')
         AKS_TENANT = credentials('aks-tenant')
         AKS_RESOURCE_GROUP = credentials('aks-resource-group')
         AKS_NAME = credentials('aks-name')
         ACR_NAME = credentials('acr-name')
         ACR_URL = credentials('acr-url')
         // change this later
-        ACR_PULL_CREDENTIAL = 'ndop-lab-acr-credential-secret'
+        ACR_PULL_CREDENTIAL = 'ndop-acr-credential-secret'
         SONAR_CREDENTIALS = credentials('sonar_credentials')
         SELENIUM_GRID_HOST = 'selenium-hub' //credentials('selenium-grid-host')
         SELENIUM_GRID_PORT = '4444' //credentials('selenium-grid-port')
     }
-    
 
     stages {
-        
-       stage('Prepare environment') {
+        stage('Prepare environment') {
             steps {
                 echo '-=- prepare environment -=-'
                 sh 'java -version'
@@ -94,12 +92,12 @@ spec:
                 sh './mvnw compile'
             }
         }
-        
+
         // stage('Code inspection & quality gate') {
         //     steps {
         //          echo '-=- run code inspection & check quality gate -=-'
         //          withSonarQubeEnv('ci-sonarqube') {
-        //              sh "./mvnw clean compile sonar:sonar -Dsonar.projectKey=$APP_NAME-$BRANCH_MINUS -Dsonar.login=$SONAR_CREDENTIALS_USR -Dsonar.password=$SONAR_CREDENTIALS_PSW" 
+        //              sh "./mvnw clean compile sonar:sonar -Dsonar.projectKey=$APP_NAME-$BRANCH_MINUS -Dsonar.login=$SONAR_CREDENTIALS_USR -Dsonar.password=$SONAR_CREDENTIALS_PSW"
         //          }
         //      }
         //  }
@@ -129,7 +127,7 @@ spec:
                 }
             }
         }*/
-        
+
         // stage ('Generate BOM') {
         //     steps {
         //         sh './mvnw org.cyclonedx:cyclonedx-maven-plugin:makeBom'
@@ -141,7 +139,7 @@ spec:
                 dependencyTrackPublisher artifact: 'target/bom.xml', projectId: '7c8d1e60-a221-417c-9d7c-d560d965a181', synchronous: true
             }
         }
-        
+
         stage('Software composition analysis') {
             steps {
                 echo '-=- run software composition analysis -=-'
@@ -179,7 +177,7 @@ spec:
                 }
             }
         }
-        
+
         stage('Run container image') {
             steps {
                 echo '-=- run container image -=-'
@@ -232,20 +230,19 @@ spec:
         //         archiveArtifacts artifacts: '*.report.csv'
         //     }
         // }
-        
 
-        // stage('Promote container image') {
-        //     steps {
-        //         echo '-=- promote container image -=-'
-        //         container('podman') {
-        //             // use latest or a non-snapshot tag to deploy to production
-        //             sh "podman tag $IMAGE_SNAPSHOT $ACR_URL/$IMAGE_NAME:$APP_VERSION"
-        //             sh "podman push $ACR_URL/$IMAGE_NAME:$APP_VERSION"
-        //             sh "podman tag $IMAGE_SNAPSHOT $ACR_URL/$IMAGE_NAME:latest"
-        //             sh "podman push $ACR_URL/$IMAGE_NAME:latest"
-        //         }
-        //     }
-        // }
+    // stage('Promote container image') {
+    //     steps {
+    //         echo '-=- promote container image -=-'
+    //         container('podman') {
+    //             // use latest or a non-snapshot tag to deploy to production
+    //             sh "podman tag $IMAGE_SNAPSHOT $ACR_URL/$IMAGE_NAME:$APP_VERSION"
+    //             sh "podman push $ACR_URL/$IMAGE_NAME:$APP_VERSION"
+    //             sh "podman tag $IMAGE_SNAPSHOT $ACR_URL/$IMAGE_NAME:latest"
+    //             sh "podman push $ACR_URL/$IMAGE_NAME:latest"
+    //         }
+    //     }
+    // }
     }
 
     post {
