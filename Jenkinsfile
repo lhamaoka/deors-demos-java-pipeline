@@ -109,15 +109,15 @@ spec:
             }
         }
 
-        stage('Dependency Tracker') {
-            steps {
-                dependencyTrackPublisher artifact: 'target/bom.xml', projectId: '90bd4d26-17ce-4e37-8caa-ee00cdee224a', synchronous: true
-            }
-        }
-
         stage('Generate BOM') {
             steps {
                 sh './mvnw org.cyclonedx:cyclonedx-maven-plugin:makeBom'
+            }
+        }
+
+        stage('Dependency Tracker') {
+            steps {
+                dependencyTrackPublisher artifact: 'target/bom.xml', projectId: '51a9d52b-faa1-4956-9963-d1d6400d6c02___', synchronous: true
             }
         }
 /*
