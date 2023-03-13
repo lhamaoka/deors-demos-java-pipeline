@@ -86,7 +86,6 @@ spec:
             }
         }
 
-        /*
         stage('Compile') {
             steps {
                 echo '-=- compiling project -=-'
@@ -94,14 +93,15 @@ spec:
             }
         }
 
+        /*
         stage('Code inspection & quality gate') {
             steps {
                  echo '-=- run code inspection & check quality gate -=-'
                  withSonarQubeEnv('ci-sonarqube') {
                      sh "./mvnw clean compile sonar:sonar -Dsonar.projectKey=$APP_NAME-$BRANCH_MINUS -Dsonar.login=$SONAR_CREDENTIALS_USR -Dsonar.password=$SONAR_CREDENTIALS_PSW"
                  }
-             }
-         }
+            }
+        }
 
         stage('Mutation tests') {
             steps {
@@ -158,7 +158,7 @@ spec:
                     }
                 }
             }
-        }
+        }*/
 
         stage('Package') {
             steps {
@@ -177,7 +177,7 @@ spec:
                     sh "podman push $ACR_URL/$IMAGE_SNAPSHOT"
                 }
             }
-        }*/
+        }
 
         stage('Run container image') {
             steps {
