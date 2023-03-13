@@ -111,7 +111,7 @@ spec:
 
         stage('Dependency Tracker') {
             steps {
-                dependencyTrackPublisher artifact: 'target/bom.xml', projectId: 'af61250c-6f65-4d02-9c0a-50710277c141', synchronous: true
+                dependencyTrackPublisher artifact: 'target/bom.xml', projectId: '90bd4d26-17ce-4e37-8caa-ee00cdee224a', synchronous: true
             }
         }
 
