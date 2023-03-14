@@ -117,16 +117,15 @@ spec:
 
         stage('Dependency Tracker') {
             steps {
-                dependencyTrackPublisher
-                    artifact: 'target/bom.xml',
+                dependencyTrackPublisher artifact: 'target/bom.xml',
                     projectId: '51a9d52b-faa1-4956-9963-d1d6400d6c02',
                     synchronous: true,
-                    failedTotalCritical: qualityGates.security.dependencies.critical.failed,
-                    unstableTotalCritical: qualityGates.security.dependencies.critical.unstable,
-                    failedTotalHigh: qualityGates.security.dependencies.high.failed,
-                    unstableTotalHigh: qualityGates.security.dependencies.high.unstable,
-                    failedTotalMedium: qualityGates.security.dependencies.medium.failed,
-                    unstableTotalMedium: qualityGates.security.dependencies.medium.unstable
+                    failedTotalCritical:    qualityGates.security.dependencies.critical.failed,
+                    unstableTotalCritical:  qualityGates.security.dependencies.critical.unstable,
+                    failedTotalHigh:        qualityGates.security.dependencies.high.failed,
+                    unstableTotalHigh:      qualityGates.security.dependencies.high.unstable,
+                    failedTotalMedium:      qualityGates.security.dependencies.medium.failed,
+                    unstableTotalMedium:    qualityGates.security.dependencies.medium.unstable
             }
         }
 /*
