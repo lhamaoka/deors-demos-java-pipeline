@@ -196,6 +196,7 @@ spec:
             }
         }
 
+        /*
         stage('Web page performance analysis') {
             steps {
                 echo '-=- execute web page performance analysis -=-'
@@ -211,6 +212,7 @@ spec:
                 archiveArtifacts artifacts: '*.report.csv'
             }
         }
+        */
 
         stage('Promote container image') {
             steps {
