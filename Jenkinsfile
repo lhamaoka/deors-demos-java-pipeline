@@ -60,7 +60,7 @@ spec:
         // change this later
         ACR_PULL_CREDENTIAL = 'ndop-acr-credential-secret'
         SONAR_CREDENTIALS = credentials('sonar_credentials')
-        SELENIUM_GRID_HOST = 'selenium-grid' //credentials('selenium-grid-host')
+        SELENIUM_GRID_HOST = 'selenium-hub' //credentials('selenium-grid-host')
         SELENIUM_GRID_PORT = '4444' //credentials('selenium-grid-port')
     }
 
