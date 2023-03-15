@@ -1,3 +1,8 @@
+import groovy.json.JsonBuilder
+import groovy.json.JsonSlurper
+
+def MYPROJECT = ''
+def dataJson = ''
 pipeline {
     agent {
         kubernetes {
@@ -38,6 +43,9 @@ spec:
     }
 
     environment {
+        BASE_URL = credentials('url-dependency')
+        DEPENDENCY_API_KEY = credentials('dependency--api-key')
+        PROJECT_NAME = 'prueba_dt'
         APP_NAME = 'deors-demos-java-pipeline'
         APP_VERSION = '1.0'
         APP_CONTEXT_ROOT = '/'
@@ -106,6 +114,38 @@ spec:
             steps {
                 echo '-=- execute mutation tests -=-'
                 sh './mvnw org.pitest:pitest-maven:mutationCoverage'
+            }
+        }
+
+        stage('get-projects') {
+            steps {
+                script {
+                    env.MYPROJECT = sh( script: """
+                    curl --location 'https://${BASE_URL}/api/v1/project?name=${PROJECT_NAME}&excludeInactive=false' \
+                    --header 'Accept: application/json' \
+                    --header 'X-Api-Key: ${DEPENDENCY_API_KEY}'""",
+                    returnStdout: true).trim()
+                    def jsonSlurper = new JsonSlurper()
+                    def variable = jsonSlurper.parseText("${env.MYPROJECT}")
+                    env.dataJson = variable.uuid[0]
+                //println(data)
+                }
+                echo "${env.MYPROJECT}"
+                echo "${env.dataJson}"
+            }
+        }
+        stage('create-project') {
+            steps {
+                echo "${BASE_URL}"
+                sh """
+                    curl --location --request PUT 'https://${BASE_URL}/api/v1/project' \
+                        --header 'Content-Type: application/json' \
+                        --header 'Accept: application/json' \
+                        --header 'X-Api-Key: ${DEPENDENCY_API_KEY}' \
+                        --data '{
+                        "name": "${PROJECT_NAME}"
+                        }'
+                """
             }
         }
 
