@@ -137,7 +137,6 @@ spec:
                 }
                 echo "${env.MYPROJECT}"
                 echo "${env.dataJson}"
-
             }
         }
 
