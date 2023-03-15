@@ -3,6 +3,14 @@ import groovy.json.JsonSlurper
 
 def MYPROJECT = ''
 def dataJson = ''
+def CREATE = ''
+
+def getUuid(requestValue) {
+    def jsonSlurper = new JsonSlurper()
+    def variable = jsonSlurper.parseText(requestValue)
+    return variable.uuid[0]
+}
+
 pipeline {
     agent {
         kubernetes {
@@ -125,27 +133,38 @@ spec:
                     --header 'Accept: application/json' \
                     --header 'X-Api-Key: ${DEPENDENCY_API_KEY}'""",
                     returnStdout: true).trim()
-                    def jsonSlurper = new JsonSlurper()
-                    def variable = jsonSlurper.parseText("${env.MYPROJECT}")
-                    env.dataJson = variable.uuid[0]
-                //println(data)
+                    env.dataJson = getUuid("${env.MYPROJECT}")
                 }
                 echo "${env.MYPROJECT}"
                 echo "${env.dataJson}"
+
             }
         }
+
         stage('create-project') {
+            when {
+                expression {
+                    env.dataJson == null
+                    return  env.dataJson
+                }
+            }
             steps {
+                script {
+                    env.CREATE = sh( script: """
+                        curl --location --request PUT 'https://${BASE_URL}/api/v1/project' \
+                            --header 'Content-Type: application/json' \
+                            --header 'Accept: application/json' \
+                            --header 'X-Api-Key: ${DEPENDENCY_API_KEY}' \
+                            --data '{
+                            "name": "${PROJECT_NAME}"
+                            }'
+                    """, returnStdout: true).trim()
+                    env.dataJson = getUuid("${env.CREATE}")
+                }
                 echo "${BASE_URL}"
-                sh """
-                    curl --location --request PUT 'https://${BASE_URL}/api/v1/project' \
-                        --header 'Content-Type: application/json' \
-                        --header 'Accept: application/json' \
-                        --header 'X-Api-Key: ${DEPENDENCY_API_KEY}' \
-                        --data '{
-                        "name": "${PROJECT_NAME}"
-                        }'
-                """
+                echo('se creo el proyecto con los siguientes valores')
+                echo "${env.CREATE}"
+                echo "${env.dataJson}"
             }
         }
 
@@ -158,7 +177,7 @@ spec:
         stage('Dependency Tracker') {
             steps {
                 dependencyTrackPublisher artifact: 'target/bom.xml',
-                    projectId: '51a9d52b-faa1-4956-9963-d1d6400d6c02',
+                    projectId: '${env.dataJson}',
                     synchronous: true,
                     failedTotalCritical:    qualityGates.security.dependencies.critical.failed,
                     unstableTotalCritical:  qualityGates.security.dependencies.critical.unstable,
