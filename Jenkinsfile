@@ -133,18 +133,18 @@ spec:
                     --header 'Accept: application/json' \
                     --header 'X-Api-Key: ${DEPENDENCY_API_KEY}'""",
                     returnStdout: true).trim()
-                    env.dataJson = getUuid("${env.MYPROJECT}")
+                    env.dataJson = getUUID("${env.MYPROJECT}")
                 }
-                echo "${env.MYPROJECT}"
-                echo "${env.dataJson}"
             }
         }
 
         stage('create-project') {
             when {
                 expression {
-                    env.dataJson == null
-                    return  env.dataJson
+                    equals {
+                        expected: null
+                        actual: env.dataJson
+                    }
                 }
             }
             steps {
@@ -158,12 +158,8 @@ spec:
                             "name": "${PROJECT_NAME}"
                             }'
                     """, returnStdout: true).trim()
-                    env.dataJson = getUuid("${env.CREATE}")
+                    env.dataJson = getUUID("${env.CREATE}")
                 }
-                echo "${BASE_URL}"
-                echo('se creo el proyecto con los siguientes valores')
-                echo "${env.CREATE}"
-                echo "${env.dataJson}"
             }
         }
 
