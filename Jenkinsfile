@@ -5,7 +5,7 @@ def MYPROJECT = ''
 def dataJson = ''
 def CREATE = ''
 
-def getUuid(requestValue) {
+def getUUID(requestValue) {
     def jsonSlurper = new JsonSlurper()
     def variable = jsonSlurper.parseText(requestValue)
     return variable.uuid[0]
