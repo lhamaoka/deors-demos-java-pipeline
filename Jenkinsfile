@@ -38,7 +38,7 @@ spec:
         runAsUser: 0
         privileged: true
     - name: aks
-      image: ndoptestacracr48487.azurecr.io/ndop_aks_builder:latest
+      image: ndoppltfoundationacr36221.azurecr.io/ndop_aks_builder:latest
       imagePullPolicy: Always
       command:
         - sleep
