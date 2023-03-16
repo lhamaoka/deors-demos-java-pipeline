@@ -143,10 +143,7 @@ spec:
         stage('create-project') {
             when {
                 expression {
-                    equals {
-                        expected: 'null'
-                        actual: env.dataJson
-                    }
+                    return env.dataJson == null
                 }
             }
             steps {
