@@ -176,7 +176,7 @@ spec:
         stage('Dependency Tracker') {
             steps {
                 dependencyTrackPublisher artifact: 'target/bom.xml',
-                    projectId: '${env.dataJson}',
+                    projectId: env.dataJson,
                     synchronous: true,
                     failedTotalCritical:    qualityGates.security.dependencies.critical.failed,
                     unstableTotalCritical:  qualityGates.security.dependencies.critical.unstable,
