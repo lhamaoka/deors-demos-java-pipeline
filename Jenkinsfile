@@ -134,7 +134,7 @@ spec:
                     --header 'X-Api-Key: ${DEPENDENCY_API_KEY}'""",
                     returnStdout: true).trim()
                     echo "Salida del env.dataJson del get-project ${env.dataJson}"
-                    echo "Clase del env.dataJson: ${env.dataJson.class}"
+                    echo "Clase del env.dataJson: ${env.dataJson}"
                     env.dataJson = getUUID("${env.MYPROJECT}")
                 }
             }
@@ -144,7 +144,7 @@ spec:
             when {
                 expression {
                     equals {
-                        expected: null
+                        expected: 'null'
                         actual: env.dataJson
                     }
                 }
