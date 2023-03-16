@@ -74,7 +74,7 @@ spec:
         ACR_NAME = credentials('acr-name')
         ACR_URL = credentials('acr-url')
         // change this later
-        ACR_PULL_CREDENTIAL = 'ndop-acr-credential-secret'
+        ACR_PULL_CREDENTIAL = 'ndop-platform-acr-credential-secret'
         SONAR_CREDENTIALS = credentials('sonar_credentials')
         SELENIUM_HUB_HOST = credentials('selenium-hub-host')
         SELENIUM_HUB_PORT = credentials('selenium-hub-port')
