@@ -175,6 +175,7 @@ spec:
 
         stage('Dependency Tracker') {
             steps {
+                echo env.dataJson
                 dependencyTrackPublisher artifact: 'target/bom.xml',
                     projectId: env.dataJson,
                     synchronous: true,
