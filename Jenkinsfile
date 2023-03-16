@@ -143,7 +143,7 @@ spec:
         stage('create-project') {
             when {
                 expression {
-                    return env.dataJson == null
+                    return env.dataJson != null
                 }
             }
             steps {
