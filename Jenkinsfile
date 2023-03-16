@@ -133,7 +133,8 @@ spec:
                     --header 'Accept: application/json' \
                     --header 'X-Api-Key: ${DEPENDENCY_API_KEY}'""",
                     returnStdout: true).trim()
-                    env.dataJson = getUUID("${env.MYPROJECT}")
+                    echo "Salida del env.dataJson del get-project ${env.dataJson}"
+                    nv.dataJson = getUUID("${env.MYPROJECT}")
                 }
             }
         }
