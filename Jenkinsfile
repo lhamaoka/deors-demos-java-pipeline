@@ -174,7 +174,7 @@ spec:
             steps {
                 echo "${env.dataJson}"
                 dependencyTrackPublisher artifact: 'target/bom.xml',
-                    projectId: '543cb98b-af7f-4510-a22a-bd5884b6418f',
+                    projectId: "${env.dataJson}",
                     synchronous: true,
                     failedTotalCritical:    qualityGates.security.dependencies.critical.failed,
                     unstableTotalCritical:  qualityGates.security.dependencies.critical.unstable,
