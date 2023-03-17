@@ -135,7 +135,7 @@ spec:
                     --header 'X-Api-Key: ${DEPENDENCY_API_KEY}'""",
                     returnStdout: true).trim()
                     env.dataJson = getUUID("${env.MYPROJECT}")
-                    println("${env.MYPROJECT}")
+                    println("${env.dataJson}")
                 }
             }
         }
@@ -143,6 +143,7 @@ spec:
         stage('create-project') {
             when {
                 expression {
+                    echo "Valor del env.dataJson dentro del when ${env.dataJson}"
                     equals {
                         expected: ''
                         actual: env.dataJson
