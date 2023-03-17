@@ -145,7 +145,7 @@ spec:
                 expression {
                     echo "Valor del env.dataJson dentro del when ${env.dataJson}"
                     equals {
-                        expected: ''
+                        expected: 'null'
                         actual: env.dataJson
                     }
                 }
