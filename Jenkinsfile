@@ -148,6 +148,7 @@ spec:
             }
             steps {
                 script {
+                    echo "Valor de env.dataJson antes del create-project: ${env.dataJson}"
                     env.CREATE = sh( script: """
                         curl --location --request PUT 'https://${BASE_URL}/api/v1/project' \
                             --header 'Content-Type: application/json' \
@@ -158,6 +159,7 @@ spec:
                             }'
                     """, returnStdout: true).trim()
                     env.dataJson = getUUID("${env.CREATE}")
+                    echo "Valor de env.dataJson despues del create-project: ${env.dataJson}"
                 }
             }
         }
@@ -172,7 +174,7 @@ spec:
             steps {
                 echo "${env.dataJson}"
                 dependencyTrackPublisher artifact: 'target/bom.xml',
-                    projectId: "${env.dataJson}",
+                    projectId: '543cb98b-af7f-4510-a22a-bd5884b6418f',
                     synchronous: true,
                     failedTotalCritical:    qualityGates.security.dependencies.critical.failed,
                     unstableTotalCritical:  qualityGates.security.dependencies.critical.unstable,
