@@ -143,7 +143,7 @@ spec:
 
         stage('create-project') {
             when {
-                echo "Valor del env.dataJson dentro del when ${env.dataJson}"
+                //echo "Valor del env.dataJson dentro del when ${env.dataJson}"
                 anyOf {
                     expression { env.dataJson == 'null' }
                     expression { env.dataJson == null }
