@@ -142,13 +142,10 @@ spec:
 
         stage('create-project') {
             when {
-                expression {
-                    echo "Valor del env.dataJson dentro del when ${env.dataJson}"
-                    equals {
-                        expected: 'null'
-                        actual: env.dataJson
-                    }
-                }
+                echo "Valor del env.dataJson dentro del when ${env.dataJson}"
+                equals
+                    expected: null,
+                    actual: env.dataJson
             }
             steps {
                 script {
