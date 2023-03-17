@@ -4,11 +4,12 @@ import groovy.json.JsonSlurper
 def MYPROJECT = ''
 def dataJson = ''
 def CREATE = ''
+def dataJsonCreate = ''
 
 def getUUID(requestValue) {
     def jsonSlurper = new JsonSlurper()
     def variable = jsonSlurper.parseText(requestValue)
-    return variable.uuid
+    return variable.uuid[0]
 }
 
 pipeline {
@@ -133,9 +134,8 @@ spec:
                     --header 'Accept: application/json' \
                     --header 'X-Api-Key: ${DEPENDENCY_API_KEY}'""",
                     returnStdout: true).trim()
-                    echo "Salida del env.dataJson del get-project ${env.dataJson}"
-                    echo "Clase del env.dataJson: ${env.dataJson}"
-                    env.dataJson = getUUID(${ env.MYPROJECT })
+                    env.dataJson = getUUID("${env.MYPROJECT}")
+                    println("${env.MYPROJECT}")
                 }
             }
         }
@@ -151,7 +151,6 @@ spec:
             }
             steps {
                 script {
-                    echo "Valor de env.dataJson antes del create-project: ${env.dataJson}"
                     env.CREATE = sh( script: """
                         curl --location --request PUT 'https://${BASE_URL}/api/v1/project' \
                             --header 'Content-Type: application/json' \
@@ -162,7 +161,7 @@ spec:
                             }'
                     """, returnStdout: true).trim()
                     env.dataJson = getUUID("${env.CREATE}")
-                    echo "Valor de env.dataJson despues del create-project: ${env.dataJson}"
+                    println("${env.MYPROJECT}")
                 }
             }
         }
