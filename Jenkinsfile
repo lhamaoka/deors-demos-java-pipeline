@@ -137,10 +137,6 @@ spec:
                     returnStdout: true).trim()
                     env.dataJson = getUUID("${env.MYPROJECT}")
                     println("${env.dataJson}")
-                    if(env.dataJson == null || env.dataJson == ''){
-                        env.dataJson = 1
-                    }
-                    println("${env.dataJson}")
                 }
             }
         }
@@ -148,7 +144,11 @@ spec:
         stage('create-project') {
             when {
                 echo "Valor del env.dataJson dentro del when ${env.dataJson}"
-                env.dataJson == 1
+                anyOf {
+                    expression { env.dataJson == 'null' }
+                    expression { env.dataJson == null }
+                    expression { env.dataJson == [] }
+                }
             }
             steps {
                 script {
