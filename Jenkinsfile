@@ -144,7 +144,7 @@ spec:
             when {
                 expression {
                     equals {
-                        expected: null
+                        expected: ''
                         actual: env.dataJson
                     }
                 }
