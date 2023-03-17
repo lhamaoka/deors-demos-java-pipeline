@@ -148,7 +148,7 @@ spec:
         stage('create-project') {
             when {
                 echo "Valor del env.dataJson dentro del when ${env.dataJson}"
-                env.dataJson == expected: 1
+                env.dataJson == 1
             }
             steps {
                 script {
