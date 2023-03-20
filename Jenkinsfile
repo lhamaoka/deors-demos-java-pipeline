@@ -143,7 +143,6 @@ spec:
 
         stage('create-project') {
             when {
-                echo "Valor del env.dataJson dentro del when ${env.dataJson}"
                 anyOf {
                     expression { env.dataJson == 'null' }
                     expression { env.dataJson == null }
@@ -152,6 +151,7 @@ spec:
             }
             steps {
                 script {
+                    println("Valor del env.dataJson antes del create ${env.dataJson}")
                     env.CREATE = sh( script: """
                         curl --location --request PUT 'https://${BASE_URL}/api/v1/project' \
                             --header 'Content-Type: application/json' \
