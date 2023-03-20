@@ -162,7 +162,7 @@ spec:
                             }'
                     """, returnStdout: true).trim()
                     env.dataJson = getUUID("${env.CREATE}")
-                    println("${env.MYPROJECT}")
+                    println("Valor del env.dataJson despues del create ${env.dataJson}")
                 }
             }
         }
