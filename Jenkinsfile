@@ -8,7 +8,7 @@ def dataJsonCreate = ''
 def variable
 
 def getUUIDValue(requestValue) {
-    return getUUIDList(requestValue)[0]
+    return getUUID(requestValue)[0]
 }
 
 def getUUID(requestValue) {
