@@ -7,10 +7,14 @@ def CREATE = ''
 def dataJsonCreate = ''
 def variable
 
+def getUUIDValue(requestValue) {
+    return getUUIDList(requestValue)[0]
+}
+
 def getUUID(requestValue) {
     def jsonSlurper = new JsonSlurper()
     def variable = jsonSlurper.parseText(requestValue)
-    return variable.uuid[0]
+    return variable.uuid
 }
 
 pipeline {
@@ -135,7 +139,7 @@ spec:
                     --header 'Accept: application/json' \
                     --header 'X-Api-Key: ${DEPENDENCY_API_KEY}'""",
                     returnStdout: true).trim()
-                    env.dataJson = getUUID("${env.MYPROJECT}")
+                    env.dataJson = getUUIDValue("${env.MYPROJECT}")
                     println("${env.dataJson}")
                 }
             }
