@@ -1,3 +1,5 @@
+@Library('jenkins-library') _
+
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 
@@ -18,9 +20,7 @@ def getUUID(requestValue) {
 }
 
 pipeline {
-    agent {
-        kubernetes(containerCall(imageName: ACR_NAME, credentialSecret: SECRET))
-    }
+    agent any
 
     environment {
         BASE_URL = credentials('url-dependency')
