@@ -64,7 +64,7 @@ pipeline {
                     sh 'podman --version'
                     sh "podman login $ACR_URL -u $AAD_SERVICE_PRINCIPAL_USR -p $AAD_SERVICE_PRINCIPAL_PSW"
                 }
-                container('aks') {
+                container('aks-builder') {
                     sh "az login --service-principal --username $AAD_SERVICE_PRINCIPAL_USR --password $AAD_SERVICE_PRINCIPAL_PSW --tenant $AKS_TENANT"
                     sh "az aks get-credentials --resource-group $AKS_RESOURCE_GROUP --name $AKS_NAME"
                     sh "kubelogin convert-kubeconfig -l spn --client-id $AAD_SERVICE_PRINCIPAL_USR --client-secret $AAD_SERVICE_PRINCIPAL_PSW"
@@ -201,7 +201,7 @@ pipeline {
         stage('Run container image') {
             steps {
                 echo '-=- run container image -=-'
-                container('aks') {
+                container('aks-builder') {
                     sh "kubectl run $TEST_CONTAINER_NAME --image=$ACR_URL/$IMAGE_SNAPSHOT --env=JAVA_OPTS=-javaagent:/jacocoagent.jar=output=tcpserver,address=*,port=$APP_JACOCO_PORT --port=$APP_LISTENING_PORT --overrides='{\"apiVersion\": \"v1\", \"spec\": {\"imagePullSecrets\": [{\"name\": \"$ACR_PULL_CREDENTIAL\"}]}}'"
                     sh "kubectl expose pod $TEST_CONTAINER_NAME --port=$APP_LISTENING_PORT"
                     sh "kubectl expose pod $TEST_CONTAINER_NAME --port=$APP_JACOCO_PORT --name=$TEST_CONTAINER_NAME-jacoco"
@@ -270,7 +270,7 @@ pipeline {
     post {
         always {
             echo '-=- stop test container and remove deployment -=-'
-            container('aks') {
+            container('aks-builder') {
                 sh "kubectl delete pod $TEST_CONTAINER_NAME"
                 sh "kubectl delete service $TEST_CONTAINER_NAME"
                 sh "kubectl delete service $TEST_CONTAINER_NAME-jacoco"
