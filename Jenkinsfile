@@ -20,7 +20,9 @@ def getUUID(requestValue) {
 }
 
 pipeline {
-    agent any
+    agent {
+        kubernetes(containerCall(imageName: ACR_NAME, credentialSecret: SECRET))
+    }
 
     environment {
         BASE_URL = credentials('url-dependency')
