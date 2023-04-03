@@ -45,7 +45,7 @@ pipeline {
         AKS_TENANT = credentials('aks-tenant')
         AKS_RESOURCE_GROUP = credentials('aks-resource-group')
         AKS_NAME = credentials('aks-name')
-        ACR_NAME = credentials('acr-name')
+        //ACR_NAME = credentials('acr-name')
         ACR_URL = credentials('acr-url')
         // change this later
         ACR_PULL_CREDENTIAL = 'ndop-acr-credential-secret'
