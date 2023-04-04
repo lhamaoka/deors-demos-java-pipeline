@@ -87,7 +87,7 @@ pipeline {
             steps {
                 echo '-=- run code inspection & check quality gate -=-'
                 withSonarQubeEnv('ci-sonarqube') {
-                    sh "./mvnw clean compile sonar:sonar -Dsonar.projectKey=$APP_NAME-$BRANCH_MINUS -Dsonar.login=admin -Dsonar.password=adminadmin"
+                    sh "./mvnw clean compile sonar:sonar -Dsonar.projectKey=$APP_NAME-$BRANCH_MINUS -Dsonar.login=$SONAR_CREDENTIALS_USR -Dsonar.password=$SONAR_CREDENTIALS_PSW"
                 }
             }
         }
