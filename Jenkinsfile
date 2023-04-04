@@ -120,7 +120,7 @@ pipeline {
                     expression { env.dataJson == null }
                     expression { env.dataJson == [] }
                 }
-            }dependencytrack - api.lab.develop.z.atc - cloudsolutions.com
+            }
             steps {
                 script {
                     println("Valor del env.dataJson antes del create: ${env.dataJson}")
