@@ -135,7 +135,7 @@ pipeline {
                             }'
                     """, returnStdout: true).trim()
                     env.dataJson = getUUID("${env.CREATE}")
-                    println("Valor del env.CREATE antes del create: ${env.CREATE}")
+                    println("Valor del env.CREATE despues del create: ${env.CREATE}")
                     println("Valor del env.dataJson despues del create ${env.dataJson}")
                 }
             }
