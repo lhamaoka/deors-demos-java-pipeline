@@ -99,47 +99,47 @@ pipeline {
             }
         }
 
-        stage('get-projects') {
-            steps {
-                script {
-                    env.MYPROJECT = sh( script: """
-                    curl --location 'https://${BASE_URL}/api/v1/project?name=${PROJECT_NAME}&excludeInactive=false' \
-                    --header 'Accept: application/json' \
-                    --header 'X-Api-Key: ${DEPENDENCY_API_KEY}'""",
-                    returnStdout: true).trim()
-                    env.dataJson = getUUIDValue("${env.MYPROJECT}")
-                    println("${env.dataJson}")
-                }
-            }
-        }
+        // stage('get-projects') {
+        //     steps {
+        //         script {
+        //             env.MYPROJECT = sh( script: """
+        //             curl --location 'https://${BASE_URL}/api/v1/project?name=${PROJECT_NAME}&excludeInactive=false' \
+        //             --header 'Accept: application/json' \
+        //             --header 'X-Api-Key: ${DEPENDENCY_API_KEY}'""",
+        //             returnStdout: true).trim()
+        //             env.dataJson = getUUIDValue("${env.MYPROJECT}")
+        //             println("${env.dataJson}")
+        //         }
+        //     }
+        // }
 
-        stage('create-project') {
-            when {
-                anyOf {
-                    expression { env.dataJson == 'null' }
-                    expression { env.dataJson == null }
-                    expression { env.dataJson == [] }
-                }
-            }
-            steps {
-                script {
-                    println("Valor del env.dataJson antes del create: ${env.dataJson}")
-                    println("Valor del DEPENDENCY_API_KEY antes del create: ${DEPENDENCY_API_KEY}")
-                    env.CREATE = sh( script: """
-                        curl --location --request PUT 'https://${BASE_URL}/api/v1/project' \
-                            --header 'Content-Type: application/json' \
-                            --header 'Accept: application/json' \
-                            --header 'X-Api-Key: ${DEPENDENCY_API_KEY}' \
-                            --data '{
-                            "name": "${PROJECT_NAME}"
-                            }'
-                    """, returnStdout: true).trim()
-                    env.dataJson = getUUID("${env.CREATE}")
-                    println("Valor del env.CREATE despues del create: ${env.CREATE}")
-                    println("Valor del env.dataJson despues del create ${env.dataJson}")
-                }
-            }
-        }
+        // stage('create-project') {
+        //     when {
+        //         anyOf {
+        //             expression { env.dataJson == 'null' }
+        //             expression { env.dataJson == null }
+        //             expression { env.dataJson == [] }
+        //         }
+        //     }
+        //     steps {
+        //         script {
+        //             println("Valor del env.dataJson antes del create: ${env.dataJson}")
+        //             println("Valor del DEPENDENCY_API_KEY antes del create: ${DEPENDENCY_API_KEY}")
+        //             env.CREATE = sh( script: """
+        //                 curl --location --request PUT 'https://${BASE_URL}/api/v1/project' \
+        //                     --header 'Content-Type: application/json' \
+        //                     --header 'Accept: application/json' \
+        //                     --header 'X-Api-Key: ${DEPENDENCY_API_KEY}' \
+        //                     --data '{
+        //                     "name": "${PROJECT_NAME}"
+        //                     }'
+        //             """, returnStdout: true).trim()
+        //             env.dataJson = getUUID("${env.CREATE}")
+        //             println("Valor del env.CREATE despues del create: ${env.CREATE}")
+        //             println("Valor del env.dataJson despues del create ${env.dataJson}")
+        //         }
+        //     }
+        // }
 
         stage('Generate BOM') {
             steps {
