@@ -154,13 +154,13 @@ pipeline {
                     //projectId: "${env.dataJson}",
                     projectName: 'Acme Example',
                     projectVersion: '1.0',
-                    synchronous: true//,
-                    // failedTotalCritical:    qualityGates.security.dependencies.critical.failed,
-                    // unstableTotalCritical:  qualityGates.security.dependencies.critical.unstable,
-                    // failedTotalHigh:        qualityGates.security.dependencies.high.failed,
-                    // unstableTotalHigh:      qualityGates.security.dependencies.high.unstable,
-                    // failedTotalMedium:      qualityGates.security.dependencies.medium.failed,
-                    // unstableTotalMedium:    qualityGates.security.dependencies.medium.unstable
+                    synchronous: true,
+                    failedTotalCritical:    qualityGates.security.dependencies.critical.failed,
+                    unstableTotalCritical:  qualityGates.security.dependencies.critical.unstable,
+                    failedTotalHigh:        qualityGates.security.dependencies.high.failed,
+                    unstableTotalHigh:      qualityGates.security.dependencies.high.unstable,
+                    failedTotalMedium:      qualityGates.security.dependencies.medium.failed,
+                    unstableTotalMedium:    qualityGates.security.dependencies.medium.unstable
             }
         }
 /*
