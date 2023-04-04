@@ -152,8 +152,8 @@ pipeline {
                 echo "${env.dataJson}"
                 dependencyTrackPublisher artifact: 'target/bom.xml',
                     //projectId: "${env.dataJson}",
-                    projectName: $APP_NAME,
-                    projectVersion: $BUILD_NUMBER,
+                    projectName: env.APP_NAME,
+                    projectVersion: env.BUILD_NUMBER,
                     synchronous: true,
                     failedTotalCritical:    qualityGates.security.dependencies.critical.failed,
                     unstableTotalCritical:  qualityGates.security.dependencies.critical.unstable,
