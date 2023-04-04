@@ -49,7 +49,7 @@ pipeline {
         ACR_URL = credentials('acr-url')
         // change this later
         ACR_PULL_CREDENTIAL = 'ndop-acr-credential-secret'
-        //SONAR_CREDENTIALS = credentials('sonar_credentials')
+        SONAR_CREDENTIALS = credentials('sonar_credentials')
         //SELENIUM_HUB_HOST = credentials('selenium-hub-host')
         //SELENIUM_HUB_PORT = credentials('selenium-hub-port')
     }
@@ -83,14 +83,14 @@ pipeline {
             }
         }
 
-        // stage('Code inspection & quality gate') {
-        //     steps {
-        //         echo '-=- run code inspection & check quality gate -=-'
-        //         withSonarQubeEnv('ci-sonarqube') {
-        //             sh "./mvnw clean compile sonar:sonar -Dsonar.projectKey=$APP_NAME-$BRANCH_MINUS -Dsonar.login=$SONAR_CREDENTIALS_USR -Dsonar.password=$SONAR_CREDENTIALS_PSW"
-        //         }
-        //     }
-        // }
+        stage('Code inspection & quality gate') {
+            steps {
+                echo '-=- run code inspection & check quality gate -=-'
+                withSonarQubeEnv('ci-sonarqube') {
+                    sh "./mvnw clean compile sonar:sonar -Dsonar.projectKey=$APP_NAME-$BRANCH_MINUS -Dsonar.login=$SONAR_CREDENTIALS_USR -Dsonar.password=$SONAR_CREDENTIALS_PSW"
+                }
+            }
+        }
 
         stage('Mutation tests') {
             steps {
