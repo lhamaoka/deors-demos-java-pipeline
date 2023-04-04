@@ -123,7 +123,8 @@ pipeline {
             }
             steps {
                 script {
-                    println("Valor del env.dataJson antes del create ${env.dataJson}")
+                    println("Valor del env.dataJson antes del create: ${env.dataJson}")
+                    println("Valor del DEPENDENCY_API_KEY antes del create: ${DEPENDENCY_API_KEY}")
                     env.CREATE = sh( script: """
                         curl --location --request PUT 'https://${BASE_URL}/api/v1/project' \
                             --header 'Content-Type: application/json' \
