@@ -50,8 +50,8 @@ pipeline {
         // change this later
         ACR_PULL_CREDENTIAL = 'ndop-acr-credential-secret'
         SONAR_CREDENTIALS = credentials('sonar_credentials')
-        //SELENIUM_HUB_HOST = credentials('selenium-hub-host')
-        //SELENIUM_HUB_PORT = credentials('selenium-hub-port')
+    //SELENIUM_HUB_HOST = credentials('selenium-hub-host')
+    //SELENIUM_HUB_PORT = credentials('selenium-hub-port')
     }
 
     stages {
@@ -120,7 +120,7 @@ pipeline {
                     expression { env.dataJson == null }
                     expression { env.dataJson == [] }
                 }
-            }
+            }dependencytrack - api.lab.develop.z.atc - cloudsolutions.com
             steps {
                 script {
                     println("Valor del env.dataJson antes del create: ${env.dataJson}")
@@ -135,6 +135,7 @@ pipeline {
                             }'
                     """, returnStdout: true).trim()
                     env.dataJson = getUUID("${env.CREATE}")
+                    println("Valor del env.CREATE antes del create: ${env.CREATE}")
                     println("Valor del env.dataJson despues del create ${env.dataJson}")
                 }
             }
